@@ -348,19 +348,30 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);min-he
       <div id="tp-resumen" class="tp on">
         <div class="ph fu">
           <div><div class="pt">Resumen de Producción</div><div class="ps">Consolidado Cirion · Liberty · Banca · 2026</div></div>
-          <div class="pa"><div class="tb-badge" id="res-mes-lbl">—</div><button class="btn-exp" onclick="exportTab('resumen')">⬇ Exportar</button></div>
+          <div class="pa">
+            <select id="res-mes-sel" onchange="renderResumen()" style="padding:7px 11px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--tx);outline:none;font-weight:600">
+              <option value="2026-01">Ene 2026</option><option value="2026-02">Feb 2026</option>
+              <option value="2026-03">Mar 2026</option><option value="2026-04" selected>Abr 2026</option>
+              <option value="2026-05">May 2026</option><option value="2026-06">Jun 2026</option>
+              <option value="2026-07">Jul 2026</option><option value="2026-08">Ago 2026</option>
+              <option value="2026-09">Sep 2026</option><option value="2026-10">Oct 2026</option>
+              <option value="2026-11">Nov 2026</option><option value="2026-12">Dic 2026</option>
+            </select>
+            <button class="btn-exp" onclick="exportTab('resumen')">⬇ Exportar</button>
+          </div>
         </div>
         <div class="sband fu fu1" id="res-band"></div>
-        
-        <div class="slbl fu fu3">Producción vs Meta por Proyecto</div>
+
+        <!-- KPIs HERO: Proyección y Producción por proyecto -->
+        <div class="slbl fu fu2">📊 Proyección vs Producción — Cirion · Banca · Liberty</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px" id="res-hero-blocks"></div>
+
+        <div class="slbl fu fu3">Cumplimiento Mensual por Proyecto</div>
         <div class="g3 fu fu3" id="res-cump-blocks"></div>
         <div class="slbl fu fu4">Tendencia Mensual 2026</div>
         <div class="g21 fu fu4">
-        
           <div class="card"><div class="ch"><div><div class="ct">Producción vs Meta — Todos los meses</div><div class="cs">Ejecución real vs presupuesto mensual por proyecto</div></div></div><div class="cw" style="height:280px"><canvas id="ch-res-tend"></canvas></div></div>
-          <div class="card"><div class="ch"><div><div class="ct">Distribución por Proyecto</div><div class="cs">% sobre producción total acumulada</div></div></div><div class="cw" style="height:280px"><canvas id="ch-res-dona"></canvas></div></div>
-        <div class="slbl fu fu2">KPIs de Producción</div>
-        <div class="kg fu fu2" id="res-kpis"></div>
+          <div class="card"><div class="ch"><div><div class="ct">Distribución por Proyecto</div><div class="cs">% sobre producción del mes seleccionado</div></div></div><div class="cw" style="height:280px"><canvas id="ch-res-dona"></canvas></div></div>
         </div>
       </div>
 
@@ -687,7 +698,7 @@ function mkC(id,type,data,opts={}){
 }
 
 // ── Helpers ────────────────────────────────────────────────────
-function fmtCOP(v){if(v>=1e9)return`$${(v/1e9).toFixed(2)}B`;if(v>=1e6)return`$${(v/1e6).toFixed(1)}M`;if(v>=1e3)return`$${(v/1e3).toFixed(0)}K`;return`$${Math.round(v)}`;}
+function fmtCOP(v){if(v>=1e9)return`$${(v/1e9).toFixed(2)} MM`;if(v>=1e6)return`$${(v/1e6).toFixed(1)} M`;if(v>=1e3)return`$${(v/1e3).toFixed(0)} K`;return`$${Math.round(v)}`;}
 function pct(n,d){return d?Math.round(n/d*100):0;}
 function cClass(p){return p>=95?'ok':p>=75?'warn':'bad';}
 function cTClass(p){return p>=95?'ok':p>=75?'warn':'bad';}
@@ -722,6 +733,7 @@ function gotoTab(name){
   const p=document.getElementById('tp-'+name);if(p)p.classList.add('on');
   const n=document.getElementById('n-'+name);if(n)n.classList.add('act');
   _curTab=name;
+  if(name==='resumen')renderResumen();
   if(name==='proyeccion')renderProy();
   if(name==='diario')renderDiario();
   if(name==='zonas')renderZonas();
@@ -973,90 +985,99 @@ function loadData(data,proyeccion){
 // RESUMEN
 // ══════════════════════════════════════════════
 function renderResumen(){
-  const mes='2026-04';
-  const mesLbl='Abr 2026';
-  document.getElementById('res-mes-lbl').textContent=mesLbl;
+  const mes=document.getElementById('res-mes-sel')?.value||'2026-04';
+  const mesIdx=MONTHS_ISO.indexOf(mes);
+  const mesLbl=MONTHS_LBL[mesIdx]+' 2026';
 
-  const total=RAW.length;
-  const fin=RAW.filter(r=>(r.ESTADO_ACTIVIDAD||'').toUpperCase().includes('FINAL')).length;
   const prodTot=GERS.reduce((s,g)=>s+prodReal(g,mes),0);
   const metaTot=GERS.reduce((s,g)=>s+metaMes(g,mes),0);
   const cump=pct(prodTot,metaTot);
+  const prodAcum=GERS.reduce((s,g)=>s+prodAcumYTD(g,mes),0);
+  const metaAcum=GERS.reduce((s,g)=>s+metaAcumYTD(g,mes),0);
+  const cumpAcum=pct(prodAcum,metaAcum);
 
   document.getElementById('res-band').innerHTML=`
-    <div class="si"><span class="sn">${total.toLocaleString()}</span><span class="sl">Total actividades</span></div>
-    <div class="si"><span class="sn lima">${Math.round(fin/total*100)||0}%</span><span class="sl">Finalizadas</span></div>
-    <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real ${mesLbl}</span></div>
-    <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta ${mesLbl}</span></div>
-    <div class="si"><span class="sn" style="color:${cump>=95?'#4ade80':cump>=75?'#fbbf24':'#f87171'}">${cump}%</span><span class="sl">%Cumplimiento</span></div>
+    <div class="si"><span class="sn lima">${mesLbl}</span><span class="sl">Mes filtrado</span></div>
+    <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real mes</span></div>
+    <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta (proyección) mes</span></div>
+    <div class="si"><span class="sn" style="color:${cump>=95?'#4ade80':cump>=75?'#fbbf24':'#f87171'}">${cump}%</span><span class="sl">%Cumplimiento mes</span></div>
+    <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Producción acum YTD</span></div>
+    <div class="si"><span class="sn" style="color:${cumpAcum>=95?'#4ade80':cumpAcum>=75?'#fbbf24':'#f87171'}">${cumpAcum}%</span><span class="sl">%Cump acum YTD</span></div>
     <div class="si"><span class="sn lima">${fmtCOP(GERS.reduce((s,g)=>s+metaAnual(g),0))}</span><span class="sl">Meta anual 2026</span></div>`;
 
-  // KPIs
-  const vt=sumBy(RAW,'VALOR_TOTAL');
-  document.getElementById('res-kpis').innerHTML=[
-    kpi('Total Actividades',total.toLocaleString(),'Consolidado todos los proyectos','','📋'),
-    kpi('Finalizadas',fin.toLocaleString(),`${Math.round(fin/total*100)||0}% del total`,'ok','✅',Math.round(fin/total*100)||0),
-    kpi('Valor Total Real',fmtCOP(vt),'Suma valor_total producción','','💰'),
-    kpi('%Cump Mes Actual',cump+'%',`${fmtCOP(prodTot)} / ${fmtCOP(metaTot)}`,cTClass(cump),'🎯',cump),
-    kpi('Meta Anual',fmtCOP(GERS.reduce((s,g)=>s+metaAnual(g),0)),'Presupuesto total 2026','lima','📆'),
-    kpi('Prom. Diario',fmtCOP(Math.round(vt/(RAW.length/22||1)*1000)),'Estimado por actividad','lima','📅'),
-  ].join('');
+  // ── HERO KPIs: Proyección y Producción por proyecto ──
+  const heroColors={CIRION:{bg:'linear-gradient(135deg,#001D62,#0036b0)',accent:'#C5D336'},BANCA:{bg:'linear-gradient(135deg,#166534,#22c55e)',accent:'#fff'},LIBERTY:{bg:'linear-gradient(135deg,#0847a3,#3b82f6)',accent:'#C5D336'}};
+  document.getElementById('res-hero-blocks').innerHTML=GERS.map(g=>{
+    const prod=prodReal(g,mes);
+    const meta=metaMes(g,mes);
+    const cm=pct(prod,meta);
+    const prodA=prodAcumYTD(g,mes);
+    const metaA=metaAcumYTD(g,mes);
+    const ca=pct(prodA,metaA);
+    const hc=heroColors[g];
+    return `<div style="background:${hc.bg};border-radius:var(--r);padding:20px 22px;color:#fff;box-shadow:var(--sh2);position:relative;overflow:hidden">
+      <div style="position:absolute;right:14px;top:14px;font-size:36px;opacity:.13">📈</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:8px">${g}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div>
+          <div style="font-size:9.5px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px">Proyección (Meta)</div>
+          <div style="font-size:22px;font-weight:800;letter-spacing:-.5px;color:${hc.accent};font-family:'DM Mono',monospace">${fmtCOP(meta)}</div>
+        </div>
+        <div>
+          <div style="font-size:9.5px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px">Producción Real</div>
+          <div style="font-size:22px;font-weight:800;letter-spacing:-.5px;color:#fff;font-family:'DM Mono',monospace">${fmtCOP(prod)}</div>
+        </div>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,.18);border-radius:3px;overflow:hidden;margin-bottom:8px">
+        <div style="height:100%;width:${Math.min(cm,100)}%;background:${hc.accent};border-radius:3px;transition:width .55s ease"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:11px;color:rgba(255,255,255,.7)">%Cump mes: <b style="color:${hc.accent}">${cm}%</b></div>
+        <div style="font-size:11px;color:rgba(255,255,255,.7)">%Cump YTD: <b style="color:#fff">${ca}%</b></div>
+      </div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><div style="font-size:9px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.6px">Prod. Acum YTD</div><div style="font-size:14px;font-weight:700;font-family:'DM Mono',monospace">${fmtCOP(prodA)}</div></div>
+        <div><div style="font-size:9px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.6px">Meta Acum YTD</div><div style="font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:${hc.accent}">${fmtCOP(metaA)}</div></div>
+      </div>
+    </div>`;
+  }).join('');
 
   // Cumplimiento blocks
   document.getElementById('res-cump-blocks').innerHTML=GERS.map(g=>cumplBlock(g,mes)).join('');
 
-  // Tendencia
-  const prodM=MONTHS_ISO.map(m=>prodRealMes(m));
-  const metaM=MONTHS_ISO.map(m=>GERS.reduce((s,g)=>s+metaMes(g,m),0));
-  mkC('ch-res-tend','line',{
-    labels:MONTHS_LBL,
+  // Tendencia — solo hasta el mes seleccionado
+  const visibleMonths=MONTHS_ISO.slice(0,mesIdx+1);
+  const visibleLbls=MONTHS_LBL.slice(0,mesIdx+1);
+  const prodM=visibleMonths.map(m=>prodRealMes(m));
+  const metaM=visibleMonths.map(m=>GERS.reduce((s,g)=>s+metaMes(g,m),0));
+  mkC('ch-res-tend','bar',{
+    labels:visibleLbls,
     datasets:[
-      {label:'Producción Real',data:prodM,borderColor:'#001D62',backgroundColor:'rgba(0,29,98,.08)',borderWidth:2.5,fill:false,tension:.4,pointRadius:3},
-      {label:'Meta Presupuestada',data:metaM,borderColor:'#C5D336',backgroundColor:'rgba(197,211,54,.1)',borderWidth:2,fill:true,tension:.4,borderDash:[5,4],pointRadius:3}
+      {label:'Producción Real',data:prodM,backgroundColor:'rgba(0,29,98,.75)',borderRadius:5,order:1},
+      {label:'Meta Proyectada',data:metaM,type:'line',borderColor:'#C5D336',backgroundColor:'rgba(197,211,54,.12)',borderWidth:2.5,fill:true,tension:.4,pointRadius:4,order:0}
     ]
   },{
     plugins:{...CT.plugins,tooltip:{...CT.plugins.tooltip,callbacks:{label:ctx=>` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}`}}},
     scales:{y:{ticks:{color:'#5c6b8a',callback:v=>fmtCOP(v)},grid:{color:'rgba(0,0,0,.05)'}},x:{ticks:{color:'#5c6b8a'},grid:{display:false}}}
   });
 
-  // Dona distribución
-  const donaProd = GERS.map(g => 
-  sumBy(RAW.filter(r => r.GERENCIA === g), 'VALOR_TOTAL')
-);
-
-mkC('ch-res-dona','doughnut',{
-  labels: GERS,
-  datasets: [{
-    data: donaProd,
-    backgroundColor: GERS.map(g => GC[g]),
-    borderWidth: 0,
-    hoverOffset: 6
-  }]
-},{
-  cutout: '64%',
-  plugins: {
-    ...CT.plugins,
-
-    legend: {
-      ...CT.plugins.legend,
-      position: 'bottom'
-    },
-
-    datalabels: {
-      color: '#fff',
-      font: {
-        weight: 'bold',
-        size: 12
-      },
-      formatter: (value, context) => {
-        const data = context.chart.data.datasets[0].data;
-        const total = data.reduce((a, b) => a + b, 0);
-        const porcentaje = (value / total) * 100;
-        return porcentaje.toFixed(1) + '%';
-      }
+  // Dona distribución — solo mes seleccionado
+  const donaProd=GERS.map(g=>prodReal(g,mes));
+  mkC('ch-res-dona','doughnut',{
+    labels:GERS,
+    datasets:[{data:donaProd,backgroundColor:GERS.map(g=>GC[g]),borderWidth:0,hoverOffset:6}]
+  },{
+    cutout:'64%',
+    plugins:{
+      ...CT.plugins,
+      legend:{...CT.plugins.legend,position:'bottom'},
+      datalabels:{color:'#fff',font:{weight:'bold',size:12},formatter:(value,context)=>{
+        const data=context.chart.data.datasets[0].data;
+        const tot=data.reduce((a,b)=>a+b,0);
+        return tot?((value/tot)*100).toFixed(1)+'%':'0%';
+      }}
     }
-  }
-});
+  });
 }
 
 // ══════════════════════════════════════════════
