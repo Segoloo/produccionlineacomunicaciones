@@ -556,9 +556,17 @@
       font-family: 'DM Mono', monospace;
       font-size: 20px;
       font-weight: 800;
-      color: #001D62; /* Color sólido explícito para evitar invisibilidad */
+      color: #001D62 !important; /* Forzado profundo */
       letter-spacing: -0.5px;
       text-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .km-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #001D62 !important; /* Forzado profundo */
+      font-family: 'DM Mono', monospace;
+      white-space: nowrap
     }
 
     .sn.lima {
@@ -850,46 +858,18 @@
       transition: width .55s ease
     }
 
-    /* ── SUMMARY BAND ── */
-    .sband {
-      background: linear-gradient(135deg, var(--azul) 0%, var(--azul3) 100%);
-      border-radius: var(--r);
-      padding: 18px 22px;
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-bottom: 22px;
-      box-shadow: var(--sh2)
-    }
-
-    .si {
-      color: rgba(255, 255, 255, .65);
-      min-width: 90px
-    }
-
-    .sn {
-      font-size: 24px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -.8px;
-      display: block;
-      line-height: 1
-    }
-
-    .sn.lima {
-      color: var(--lima)
-    }
-
-    .sl {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-      margin-top: 2px
-    }
-
     /* ── SECTION LABEL ── */
     .slbl {
-      font-size: 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--azul);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
       font-weight: 700;
       color: var(--txm);
       text-transform: uppercase;
@@ -1089,13 +1069,15 @@
     }
 
     .km-head {
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       color: #fff;
       position: relative
     }
+
+    #tp-resumen .km-head { padding: 8px 12px; }
 
     .km-head::after {
       content: '';
@@ -1118,21 +1100,28 @@
     }
 
     .km-body {
-      padding: 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       flex: 1
     }
+
+    #tp-resumen .km-body { padding: 10px 12px; gap: 8px; }
 
     .km-main {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 20px
+      gap: 16px;
+      margin-bottom: 12px
     }
+
+    #tp-resumen .km-main { gap: 10px; margin-bottom: 8px; }
 
     .km-val-box {
       display: flex;
       flex-direction: column;
-      gap: 4px
+      gap: 2px
     }
 
     .km-label {
@@ -1189,11 +1178,13 @@
 
     .km-footer {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding-top: 15px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 12px;
       border-top: 1px solid var(--border)
     }
+
+    #tp-resumen .km-footer { padding-top: 8px; gap: 8px; }
 
     .km-sub-box {
       display: flex;
@@ -1990,63 +1981,56 @@
         <div class="sb-bot">Lineacom · v3.0<br><span id="sb-rows">0 registros</span></div>
       </nav>
 
-      <main class="main">
-
         <!-- ═══ RESUMEN ═══ -->
-        <div id="tp-resumen" class="tp on">
-          <div class="ph fu">
-            <div>
-              <div class="pt">Resumen de Producción</div>
-              <div class="ps">Consolidado Cirion · Liberty · Banca · 2026</div>
-            </div>
-            <div class="pa">
-              <div class="f-group">
-                <label>Desde</label>
-                <input type="month" id="res-d1" class="f-sel" value="2026-04" onchange="renderResumen()">
+        <div id="tp-resumen" class="tp on" style="display:flex; flex-direction:column; max-height:calc(100vh - 100px); overflow:hidden; gap:12px; padding-bottom:0">
+          
+          <!-- Row 1: Header & Filters -->
+          <div class="ph fu" style="margin-bottom:0; padding: 10px 0; border-bottom:1px solid var(--border)">
+            <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
+              <div>
+                <div class="pt" style="font-size:18px">Resumen de Producción</div>
+                <div class="ps" style="font-size:10px">Consolidado 2026 — Pantalla Única</div>
               </div>
-              <div class="f-group">
-                <label>Hasta</label>
-                <input type="month" id="res-d2" class="f-sel" value="2026-04" onchange="renderResumen()">
+              <div class="pa" style="gap:8px">
+                <div class="f-group" style="padding:2px 8px"><label style="font-size:8px">Desde</label><input type="month" id="res-d1" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:11px"></div>
+                <div class="f-group" style="padding:2px 8px"><label style="font-size:8px">Hasta</label><input type="month" id="res-d2" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:11px"></div>
+                <button class="btn-exp" onclick="exportTab('resumen')" style="padding:6px 12px; font-size:11px">📊 Exportar</button>
               </div>
-              <button class="btn-exp" onclick="exportTab('resumen')">📊 Exportar</button>
             </div>
           </div>
-          <div class="sband fu fu1" id="res-band"></div>
 
-          <!-- Gestión Integral de Proyectos -->
-          <div class="slbl fu fu2">📈 Gestión Integral — Producción vs Meta vs Acumulado</div>
-          <div
-            style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:20px;margin-bottom:28px"
-            id="res-unified-grid" class="fu fu2"></div>
+          <!-- Row 2: Summary Indicators -->
+          <div class="sband fu fu1" id="res-band" style="margin-bottom:0; gap:12px"></div>
 
-          <div class="slbl fu fu3">Tendencia Mensual: Producción vs Meta</div>
-          <div class="g21 fu fu3">
-            <div class="card">
-              <div class="ch">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%">
-                  <div>
-                    <div class="ct">Producción vs Meta Mensual — Acumulado 2026</div>
-                    <div class="cs">Ejecución real vs presupuesto mensual</div>
-                  </div>
-                  <div class="pills" id="res-trend-pills">
-                    <button class="pill on" onclick="setTrendGer('TODOS')">Consolidado</button>
-                    <button class="pill" onclick="setTrendGer('CIRION')">Cirion</button>
-                    <button class="pill" onclick="setTrendGer('LIBERTY')">Liberty</button>
-                    <button class="pill" onclick="setTrendGer('BANCA')">Banca</button>
-                  </div>
-                </div>
+          <div style="display:grid; grid-template-columns: repeat(12, 1fr); gap:15px; flex:1; overflow:hidden; padding-bottom:10px">
+              <!-- Left Column: Project Cards (4/12) -->
+              <div style="grid-column: span 4; display:flex; flex-direction:column; gap:12px; overflow:hidden">
+                  <div class="slbl fu fu2" style="font-size:10px; margin-bottom:5px">📈 Gestión Integral</div>
+                  <div id="res-unified-grid" class="fu fu2" style="display:flex; flex-direction:column; gap:10px; flex:1; overflow:hidden"></div>
               </div>
-              <div class="cw" style="height:320px"><canvas id="ch-res-tend"></canvas></div>
-            </div>
-            <div class="card">
-              <div class="ch">
-                <div>
-                  <div class="ct">Distribución por Proyecto</div>
-                  <div class="cs">% sobre producción del mes seleccionado</div>
-                </div>
+
+              <!-- Right Column: Charts (8/12) -->
+              <div style="grid-column: span 8; display:flex; flex-direction:column; gap:15px">
+                  <div class="card fu fu3" style="flex:1.6; display:flex; flex-direction:column">
+                    <div class="ch" style="padding:10px 15px">
+                      <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
+                        <div><div class="ct" style="font-size:12px">Producción vs Meta Mensual</div></div>
+                        <div class="pills" id="res-trend-pills" style="padding:2px; scale:0.9">
+                          <button class="pill on" onclick="setTrendGer('TODOS')">Consolidado</button>
+                          <button class="pill" onclick="setTrendGer('CIRION')">Cirion</button>
+                          <button class="pill" onclick="setTrendGer('LIBERTY')">Liberty</button>
+                          <button class="pill" onclick="setTrendGer('BANCA')">Banca</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cw" style="flex:1; padding:0 10px 10px"><canvas id="ch-res-tend"></canvas></div>
+                  </div>
+
+                  <div class="card fu fu4" style="flex:1; display:flex; flex-direction:column">
+                    <div class="ch" style="padding:10px 15px"><div class="ct" style="font-size:12px">Distribución por Proyecto</div></div>
+                    <div class="cw" style="flex:1; padding:0 10px 5px"><canvas id="ch-res-dona"></canvas></div>
+                  </div>
               </div>
-              <div class="cw" style="height:320px"><canvas id="ch-res-dona"></canvas></div>
-            </div>
           </div>
         </div>
 
@@ -2892,9 +2876,8 @@
       const lastMonth = range[range.length - 1];
       const prodAcum = GERS.reduce((s, g) => s + prodAcumYTD(g, lastMonth), 0);
       const metaAcum = GERS.reduce((s, g) => s + metaAcumYTD(g, lastMonth), 0);
-      const cumpAcum = pct(prodAcum, metaAcum);
       const metaAnualTotal = GERS.reduce((s, g) => s + metaAnual(g), 0);
-
+      const cumpAcumTotal = pct(prodTot, metaAnualTotal);
       const resBand = document.getElementById('res-band');
       if (resBand) {
         resBand.innerHTML = `
@@ -2904,9 +2887,9 @@
           <div class="si"><span class="sn lima">${rangeLbl}</span><span class="sl">Periodo filtrado</span></div>
           <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real</span></div>
           <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta proyectada</span></div>
-          <div class="si"><span class="sn" style="color:${cump >= 95 ? 'var(--ok)' : cump >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cump}%</span><span class="sl">%Cumplimiento</span></div>
-          <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Prod. Acumulado</span></div>
-          <div class="si"><span class="sn" style="color:${cumpAcum >= 95 ? 'var(--ok)' : cumpAcum >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cumpAcum}%</span><span class="sl">%Cump Acumulado</span></div>
+          <div class="si"><span class="sn" style="color:${cClass(cump)}">${cump}%</span><span class="sl">%Cumplimiento</span></div>
+          <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Prod. Acumulado YTD</span></div>
+          <div class="si"><span class="sn" style="color:${cClass(cumpAcumTotal)}">${cumpAcumTotal}%</span><span class="sl">%Cump Acumulado</span></div>
           <div class="si"><span class="sn lima">${fmtCOP(metaAnualTotal)}</span><span class="sl">Meta anual 2026</span></div>`;
       }
 
