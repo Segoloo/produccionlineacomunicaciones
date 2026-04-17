@@ -1099,6 +1099,43 @@
       opacity: .8
     }
 
+    .main {
+      flex: 1;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      width: 100%; /* Asegurar ancho total */
+    }
+
+    /* ── DASHBOARD 2.0 MINI METRICS ── */
+    .si-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      min-width: 100px;
+    }
+
+    .sn-mini {
+      font-family: 'DM Mono', monospace;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--azul);
+      white-space: nowrap;
+    }
+
+    .sl-mini {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--txl);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     .km-body {
       padding: 18px;
       display: flex;
@@ -1981,55 +2018,55 @@
         <div class="sb-bot">Lineacom · v3.0<br><span id="sb-rows">0 registros</span></div>
       </nav>
 
+      <main class="main">
+
         <!-- ═══ RESUMEN ═══ -->
-        <div id="tp-resumen" class="tp on" style="display:flex; flex-direction:column; max-height:calc(100vh - 100px); overflow:hidden; gap:12px; padding-bottom:0">
+        <div id="tp-resumen" class="tp on" style="display:flex; flex-direction:column; min-height:calc(100vh - 84px); max-height:calc(100vh - 84px); overflow:hidden; gap:12px; padding:10px 20px 0 20px">
           
-          <!-- Row 1: Header & Filters -->
-          <div class="ph fu" style="margin-bottom:0; padding: 10px 0; border-bottom:1px solid var(--border)">
-            <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
-              <div>
-                <div class="pt" style="font-size:18px">Resumen de Producción</div>
-                <div class="ps" style="font-size:10px">Consolidado 2026 — Pantalla Única</div>
-              </div>
-              <div class="pa" style="gap:8px">
-                <div class="f-group" style="padding:2px 8px"><label style="font-size:8px">Desde</label><input type="month" id="res-d1" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:11px"></div>
-                <div class="f-group" style="padding:2px 8px"><label style="font-size:8px">Hasta</label><input type="month" id="res-d2" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:11px"></div>
-                <button class="btn-exp" onclick="exportTab('resumen')" style="padding:6px 12px; font-size:11px">📊 Exportar</button>
-              </div>
+          <!-- Section 1: Command Ribbon (Unified Title + Metrics + Filters) -->
+          <div class="ph fu" style="margin-bottom:0; padding: 6px 0; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:20px">
+            <div style="flex-shrink:0">
+              <div class="pt" style="font-size:16px">Resumen Producción</div>
+              <div class="ps" style="font-size:9px">Consolidado 2026</div>
+            </div>
+            
+            <!-- Compact Metrics Ribbon -->
+            <div id="res-band" style="display:flex; flex:1; gap:10px; align-items:center; overflow:hidden"></div>
+
+            <!-- Filters -->
+            <div class="pa" style="gap:6px; flex-shrink:0">
+              <div class="f-group" style="padding:1px 6px; border-radius:6px"><label style="font-size:8px">Desde</label><input type="month" id="res-d1" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:10px; width:90px"></div>
+              <div class="f-group" style="padding:1px 6px; border-radius:6px"><label style="font-size:8px">Hasta</label><input type="month" id="res-d2" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:10px; width:90px"></div>
+              <button class="btn-exp" onclick="exportTab('resumen')" style="padding:4px 10px; font-size:10px; height:28px">📊 Exportar</button>
             </div>
           </div>
 
-          <!-- Row 2: Summary Indicators -->
-          <div class="sband fu fu1" id="res-band" style="margin-bottom:0; gap:12px"></div>
+          <!-- Section 2: Projects Horizontal Row (3 Columns) -->
+          <div style="padding: 5px 0">
+            <div class="slbl fu fu2" style="font-size:10px; margin-bottom:10px; color:var(--azul)">📈 Gestión Integral Proyectos</div>
+            <div id="res-unified-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px"></div>
+          </div>
 
-          <div style="display:grid; grid-template-columns: repeat(12, 1fr); gap:15px; flex:1; overflow:hidden; padding-bottom:10px">
-              <!-- Left Column: Project Cards (4/12) -->
-              <div style="grid-column: span 4; display:flex; flex-direction:column; gap:12px; overflow:hidden">
-                  <div class="slbl fu fu2" style="font-size:10px; margin-bottom:5px">📈 Gestión Integral</div>
-                  <div id="res-unified-grid" class="fu fu2" style="display:flex; flex-direction:column; gap:10px; flex:1; overflow:hidden"></div>
+          <!-- Section 3: Analytics Horizontal Row (2 Columns) -->
+          <div style="display:grid; grid-template-columns: 2fr 1fr; gap:15px; flex:1; overflow:hidden; padding-bottom:15px">
+              <div class="card fu fu3" style="display:flex; flex-direction:column; min-height:0">
+                <div class="ch" style="padding:8px 15px">
+                  <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
+                    <div class="ct" style="font-size:11px">Tendencia Mensual</div>
+                    <div class="pills" id="res-trend-pills" style="padding:2px; scale:0.85; transform-origin:right">
+                      <button class="pill on" onclick="setTrendGer('TODOS')">Consolidado</button>
+                      <button class="pill" onclick="setTrendGer('CIRION')">Cirion</button>
+                      <button class="pill" onclick="setTrendGer('LIBERTY')">Liberty</button>
+                      <button class="pill" onclick="setTrendGer('BANCA')">Banca</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="cw" style="flex:1; padding:0 10px 10px; min-height:0"><canvas id="ch-res-tend"></canvas></div>
               </div>
 
-              <!-- Right Column: Charts (8/12) -->
-              <div style="grid-column: span 8; display:flex; flex-direction:column; gap:15px">
-                  <div class="card fu fu3" style="flex:1.6; display:flex; flex-direction:column">
-                    <div class="ch" style="padding:10px 15px">
-                      <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
-                        <div><div class="ct" style="font-size:12px">Producción vs Meta Mensual</div></div>
-                        <div class="pills" id="res-trend-pills" style="padding:2px; scale:0.9">
-                          <button class="pill on" onclick="setTrendGer('TODOS')">Consolidado</button>
-                          <button class="pill" onclick="setTrendGer('CIRION')">Cirion</button>
-                          <button class="pill" onclick="setTrendGer('LIBERTY')">Liberty</button>
-                          <button class="pill" onclick="setTrendGer('BANCA')">Banca</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="cw" style="flex:1; padding:0 10px 10px"><canvas id="ch-res-tend"></canvas></div>
-                  </div>
-
-                  <div class="card fu fu4" style="flex:1; display:flex; flex-direction:column">
-                    <div class="ch" style="padding:10px 15px"><div class="ct" style="font-size:12px">Distribución por Proyecto</div></div>
-                    <div class="cw" style="flex:1; padding:0 10px 5px"><canvas id="ch-res-dona"></canvas></div>
-                  </div>
+              <div class="card fu fu4" style="display:flex; flex-direction:column; min-height:0">
+                <div class="ch" style="padding:8px 15px"><div class="ct" style="font-size:11px">Distribución %</div></div>
+                <div class="cw" style="flex:1; padding:0 10px 8px; min-height:0"><canvas id="ch-res-dona"></canvas></div>
               </div>
           </div>
         </div>
@@ -2881,16 +2918,12 @@
       const resBand = document.getElementById('res-band');
       if (resBand) {
         resBand.innerHTML = `
-          <div style="width:100%; grid-column: 1 / -1; margin-bottom:-10px">
-            <div class="co-badge">CONSOLIDADO COMPAÑÍA</div>
-          </div>
-          <div class="si"><span class="sn lima">${rangeLbl}</span><span class="sl">Periodo filtrado</span></div>
-          <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real</span></div>
-          <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta proyectada</span></div>
-          <div class="si"><span class="sn" style="color:${cClass(cump)}">${cump}%</span><span class="sl">%Cumplimiento</span></div>
-          <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Prod. Acumulado YTD</span></div>
-          <div class="si"><span class="sn" style="color:${cClass(cumpAcumTotal)}">${cumpAcumTotal}%</span><span class="sl">%Cump Acumulado</span></div>
-          <div class="si"><span class="sn lima">${fmtCOP(metaAnualTotal)}</span><span class="sl">Meta anual 2026</span></div>`;
+          <div class="si-mini"><span class="sn-mini">${rangeLbl}</span><span class="sl-mini">Periodo</span></div>
+          <div class="si-mini"><span class="sn-mini">${fmtCOP(prodTot)}</span><span class="sl-mini">Producción</span></div>
+          <div class="si-mini"><span class="sn-mini">${fmtCOP(metaTot)}</span><span class="sl-mini">Meta</span></div>
+          <div class="si-mini"><span class="sn-mini" style="color:${cClass(cump)}">${cump}%</span><span class="sl-mini">%Cump</span></div>
+          <div class="si-mini"><span class="sn-mini" style="color:${cClass(cumpAcumTotal)}">${cumpAcumTotal}%</span><span class="sl-mini">%YTD</span></div>
+          <div class="si-mini"><span class="sn-mini lima">${fmtCOP(metaAnualTotal)}</span><span class="sl-mini">Anual 2026</span></div>`;
       }
 
       const grid = document.getElementById('res-unified-grid');
