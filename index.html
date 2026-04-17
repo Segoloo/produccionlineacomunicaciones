@@ -18,22 +18,23 @@
       --azul2: #052c8a;
       --azul3: #0a3bb6;
       --lima: #C5D336;
-      --lima2: #9eaa25;
+      --lima2: #d6e44a;
       --lima3: rgba(197, 211, 54, .12);
-      --bg: #f0f3fa;
+      --bg: #f5f7fb;
       --white: #fff;
-      --border: #e2e8f5;
+      --border: #e2e8f0;
       --tx: #0f172a;
       --txm: #475569;
       --txl: #94a3b8;
-      --ok: #10b981;
+      --ok: #22c55e;
       --warn: #f59e0b;
       --bad: #ef4444;
       --r: 16px;
       --rs: 10px;
-      --glass: rgba(255, 255, 255, 0.82);
-      --sh: 0 4px 20px rgba(0, 29, 98, .06), 0 1px 3px rgba(0, 29, 98, .03);
-      --sh2: 0 12px 36px rgba(0, 29, 98, .12), 0 4px 10px rgba(0, 29, 98, .04);
+      --glass: rgba(255, 255, 255, 0.85);
+      --sh: 0 10px 30px rgba(0, 29, 98, .04), 0 4px 6px rgba(0, 29, 98, .02);
+      --sh2: 0 20px 50px rgba(0, 29, 98, .1), 0 8px 15px rgba(0, 29, 98, .04);
+      --grad: linear-gradient(135deg, #001D62 0%, #0847a3 100%);
     }
 
     *,
@@ -1012,14 +1013,15 @@
       border: 1px solid var(--border);
       box-shadow: var(--sh);
       overflow: hidden;
-      transition: all .3s ease;
+      transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
       display: flex;
       flex-direction: column
     }
 
     .kpi-modern:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--sh2)
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px var(--hover-color, rgba(0, 29, 98, 0.2)), 0 5px 15px rgba(0, 0, 0, 0.05);
+      border-color: var(--hover-color, transparent);
     }
 
     .km-head {
@@ -1489,6 +1491,70 @@
       box-shadow: 0 6px 16px rgba(197, 211, 54, 0.4)
     }
 
+    /* ── ANIMATIONS ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fu { animation: fadeInUp 0.5s ease-out both; }
+    .fu1 { animation-delay: 0.1s; }
+    .fu2 { animation-delay: 0.2s; }
+    .fu3 { animation-delay: 0.3s; }
+    .fu4 { animation-delay: 0.4s; }
+
+    /* ── COMPANY BADGE ── */
+    .co-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(0, 29, 98, 0.08);
+      color: var(--azul);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .co-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--lima);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--lima);
+    }
+
+    /* ── PILL FILTERS ── */
+    .pills {
+      display: flex;
+      gap: 6px;
+      background: #f1f3f9;
+      padding: 4px;
+      border-radius: 12px;
+    }
+
+    .pill {
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--txm);
+      cursor: pointer;
+      transition: all .2s;
+      border: none;
+      background: transparent;
+    }
+
+    .pill:hover { color: var(--azul); }
+    .pill.on {
+      background: var(--white);
+      color: var(--azul);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
     /* ── UPLOAD ZONE ── */
     .uz {
       border: 2px dashed var(--border);
@@ -1891,9 +1957,17 @@
           <div class="g21 fu fu3">
             <div class="card">
               <div class="ch">
-                <div>
-                  <div class="ct">Producción vs Meta Mensual — Acumulado 2026</div>
-                  <div class="cs">Ejecución real consolidada vs presupuesto mensual</div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%">
+                  <div>
+                    <div class="ct">Producción vs Meta Mensual — Acumulado 2026</div>
+                    <div class="cs">Ejecución real vs presupuesto mensual</div>
+                  </div>
+                  <div class="pills" id="res-trend-pills">
+                    <button class="pill on" onclick="setTrendGer('TODOS')">Consolidado</button>
+                    <button class="pill" onclick="setTrendGer('CIRION')">Cirion</button>
+                    <button class="pill" onclick="setTrendGer('LIBERTY')">Liberty</button>
+                    <button class="pill" onclick="setTrendGer('BANCA')">Banca</button>
+                  </div>
                 </div>
               </div>
               <div class="cw" style="height:320px"><canvas id="ch-res-tend"></canvas></div>
@@ -2724,6 +2798,15 @@
     // ══════════════════════════════════════════════
     // RESUMEN
     // ══════════════════════════════════════════════
+    let _trendGer = 'TODOS';
+    function setTrendGer(g) {
+      _trendGer = g;
+      document.querySelectorAll('#res-trend-pills .pill').forEach(b => {
+        b.classList.toggle('on', b.textContent.toUpperCase() === g || (b.textContent === 'Consolidado' && g === 'TODOS'));
+      });
+      renderResumen();
+    }
+
     function renderResumen() {
       const range = getRange('res-d1', 'res-d2');
       const startIdx = MONTHS_ISO.indexOf(range[0]);
@@ -2741,26 +2824,34 @@
       const cumpAcum = pct(prodAcum, metaAcum);
       const metaAnualTotal = GERS.reduce((s, g) => s + metaAnual(g), 0);
 
-      document.getElementById('res-band').innerHTML = `
-    <div class="si"><span class="sn lima">${rangeLbl}</span><span class="sl">Periodo filtrado</span></div>
-    <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real</span></div>
-    <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta proyectada</span></div>
-    <div class="si"><span class="sn" style="color:${cump >= 95 ? 'var(--ok)' : cump >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cump}%</span><span class="sl">%Cumplimiento</span></div>
-    <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Prod. Acum YTD</span></div>
-    <div class="si"><span class="sn" style="color:${cumpAcum >= 95 ? 'var(--ok)' : cumpAcum >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cumpAcum}%</span><span class="sl">%Cump YTD</span></div>
-    <div class="si"><span class="sn lima">${fmtCOP(metaAnualTotal)}</span><span class="sl">Meta anual 2026</span></div>`;
+      const resBand = document.getElementById('res-band');
+      if (resBand) {
+        resBand.innerHTML = `
+          <div style="width:100%; grid-column: 1 / -1; margin-bottom:-10px">
+            <div class="co-badge">CONSOLIDADO COMPAÑÍA</div>
+          </div>
+          <div class="si"><span class="sn lima">${rangeLbl}</span><span class="sl">Periodo filtrado</span></div>
+          <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real</span></div>
+          <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta proyectada</span></div>
+          <div class="si"><span class="sn" style="color:${cump >= 95 ? 'var(--ok)' : cump >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cump}%</span><span class="sl">%Cumplimiento</span></div>
+          <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Prod. Acumulado</span></div>
+          <div class="si"><span class="sn" style="color:${cumpAcum >= 95 ? 'var(--ok)' : cumpAcum >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cumpAcum}%</span><span class="sl">%Cump Acumulado</span></div>
+          <div class="si"><span class="sn lima">${fmtCOP(metaAnualTotal)}</span><span class="sl">Meta anual 2026</span></div>`;
+      }
 
       const grid = document.getElementById('res-unified-grid');
       if (grid) { grid.innerHTML = GERS.map(g => renderUnifiedProjectCard(g, range)).join(''); }
 
-      // Tendencia — Siempre 12 meses
-      const prodM = MONTHS_ISO.map(m => prodRealMes(m));
-      const metaM = MONTHS_ISO.map(m => GERS.reduce((s, g) => s + metaMes(g, m), 0));
+      // Tendencia — Siempre 12 meses, filtrable por proyecto
+      const prodM = MONTHS_ISO.map(m => prodReal(_trendGer, m));
+      const metaM = MONTHS_ISO.map(m => metaMes(_trendGer, m));
+      
+      const tendColor = _trendGer === 'TODOS' ? 'rgba(0,29,98,.82)' : GC[_trendGer]+'cc';
       
       mkC('ch-res-tend', 'bar', {
         labels: MONTHS_LBL,
         datasets: [
-          { label: 'Producción Real', data: prodM, backgroundColor: 'rgba(0,29,98,.82)', borderRadius: 4, order: 1 },
+          { label: 'Producción Real', data: prodM, backgroundColor: tendColor, borderRadius: 4, order: 1 },
           { label: 'Meta Proyectada', data: metaM, type: 'line', borderColor: '#C5D336', backgroundColor: 'rgba(197,211,54,.08)', borderWidth: 3, fill: true, tension: .4, pointRadius: 4, order: 0 }
         ]
       }, {
@@ -2798,7 +2889,7 @@
       const icons = { CIRION: '🔵', LIBERTY: '🟢', BANCA: '🏦' };
 
       return `
-    <div class="kpi-modern">
+    <div class="kpi-modern" style="--hover-color:${color}">
       <div class="km-head" style="background:${color}">
         <span class="km-title">${ger}</span>
         <span class="km-icon">${icons[ger] || '📈'}</span>
@@ -2825,11 +2916,11 @@
 
         <div class="km-footer">
           <div class="km-sub-box">
-            <span class="km-sub-label">Producción YTD</span>
+            <span class="km-sub-label">Producción Acumulado</span>
             <span class="km-sub-val">${fmtCOP(prodA)}</span>
           </div>
           <div class="km-sub-box">
-            <span class="km-sub-label">Cump. YTD</span>
+            <span class="km-sub-label">Cump. Acumulado</span>
             <span class="km-sub-val" style="color:${color}">${ca}%</span>
           </div>
         </div>
