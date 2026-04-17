@@ -1954,6 +1954,7 @@
         grid-template-columns: repeat(2, 1fr)
       }
     }
+
     /* ── ESTADO GENERAL HERO ── */
     .estado-hero {
       background: linear-gradient(135deg, #001D62 0%, #0a3bb6 60%, #0847a3 100%);
@@ -1962,10 +1963,11 @@
       margin-bottom: 0;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,29,98,0.28), 0 2px 8px rgba(0,29,98,0.15);
-      border: 1.5px solid rgba(197,211,54,0.25);
+      box-shadow: 0 8px 32px rgba(0, 29, 98, 0.28), 0 2px 8px rgba(0, 29, 98, 0.15);
+      border: 1.5px solid rgba(197, 211, 54, 0.25);
       flex-shrink: 0;
     }
+
     .estado-hero::before {
       content: '';
       position: absolute;
@@ -1973,9 +1975,10 @@
       right: -10%;
       width: 350px;
       height: 350px;
-      background: radial-gradient(circle, rgba(197,211,54,0.12) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(197, 211, 54, 0.12) 0%, transparent 65%);
       pointer-events: none;
     }
+
     .estado-hero::after {
       content: '';
       position: absolute;
@@ -1983,42 +1986,48 @@
       left: -5%;
       width: 200px;
       height: 200px;
-      background: radial-gradient(circle, rgba(197,211,54,0.07) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(197, 211, 54, 0.07) 0%, transparent 70%);
       pointer-events: none;
     }
+
     .estado-hero-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 10px;
     }
+
     .estado-hero-title {
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
     .estado-hero-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
       background: #C5D336;
-      box-shadow: 0 0 10px #C5D336, 0 0 20px rgba(197,211,54,0.5);
+      box-shadow: 0 0 10px #C5D336, 0 0 20px rgba(197, 211, 54, 0.5);
       animation: pulse 2s ease-in-out infinite;
       flex-shrink: 0;
     }
+
     .estado-hero-label {
       font-size: 10px;
       font-weight: 800;
-      color: rgba(197,211,54,0.9);
+      color: rgba(197, 211, 54, 0.9);
       letter-spacing: 2px;
       text-transform: uppercase;
     }
+
     .estado-hero-period {
       font-family: 'DM Mono', monospace;
       font-size: 10px;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
       letter-spacing: 0.5px;
     }
+
     .estado-hero-metrics {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -2026,24 +2035,28 @@
       position: relative;
       z-index: 1;
     }
+
     .estado-metric {
       display: flex;
       flex-direction: column;
       gap: 3px;
       padding: 10px 12px;
-      background: rgba(255,255,255,0.07);
+      background: rgba(255, 255, 255, 0.07);
       border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.10);
+      border: 1px solid rgba(255, 255, 255, 0.10);
       backdrop-filter: blur(4px);
       transition: background .2s;
     }
+
     .estado-metric:hover {
-      background: rgba(255,255,255,0.12);
+      background: rgba(255, 255, 255, 0.12);
     }
+
     .estado-metric.highlight {
-      background: rgba(197,211,54,0.15);
-      border-color: rgba(197,211,54,0.35);
+      background: rgba(197, 211, 54, 0.15);
+      border-color: rgba(197, 211, 54, 0.35);
     }
+
     .estado-metric-val {
       font-family: 'DM Mono', monospace;
       font-size: 15px;
@@ -2052,21 +2065,23 @@
       white-space: nowrap;
       letter-spacing: -0.3px;
     }
+
     .estado-metric.highlight .estado-metric-val {
       font-size: 17px;
       color: #C5D336;
     }
+
     .estado-metric-lbl {
       font-size: 8px;
       font-weight: 700;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255, 255, 255, 0.55);
       text-transform: uppercase;
       letter-spacing: 0.8px;
     }
-    .estado-metric.highlight .estado-metric-lbl {
-      color: rgba(197,211,54,0.75);
-    }
 
+    .estado-metric.highlight .estado-metric-lbl {
+      color: rgba(197, 211, 54, 0.75);
+    }
   </style>
 </head>
 
@@ -2175,15 +2190,20 @@
                 <span class="estado-hero-label">Estado General Compañía</span>
               </div>
               <div style="display:flex; align-items:center; gap:10px">
-                <div class="f-group" style="padding:1px 8px; border-radius:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15)">
+                <div class="f-group"
+                  style="padding:1px 8px; border-radius:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15)">
                   <label style="font-size:8px; color:rgba(255,255,255,0.5)">Desde</label>
-                  <input type="month" id="res-d1" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:10px; width:88px; color:#fff; background:transparent">
+                  <input type="date" id="res-d1" class="f-sel" value="2026-04-01" onchange="renderResumen()"
+                    style="font-size:10px; width:110px; color:#fff; background:transparent">
                 </div>
-                <div class="f-group" style="padding:1px 8px; border-radius:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15)">
+                <div class="f-group"
+                  style="padding:1px 8px; border-radius:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15)">
                   <label style="font-size:8px; color:rgba(255,255,255,0.5)">Hasta</label>
-                  <input type="month" id="res-d2" class="f-sel" value="2026-04" onchange="renderResumen()" style="font-size:10px; width:88px; color:#fff; background:transparent">
+                  <input type="date" id="res-d2" class="f-sel" value="2026-04-30" onchange="renderResumen()"
+                    style="font-size:10px; width:110px; color:#fff; background:transparent">
                 </div>
-                <button class="btn-exp" onclick="exportTab('resumen')" style="padding:5px 12px; font-size:10px; height:30px">📊 Exportar</button>
+                <button class="btn-exp" onclick="exportTab('resumen')"
+                  style="padding:5px 12px; font-size:10px; height:30px">📊 Exportar</button>
               </div>
             </div>
             <!-- Metrics Grid -->
@@ -2242,11 +2262,11 @@
               </div>
               <div class="f-group">
                 <label>Desde</label>
-                <input type="month" id="dia-d1" class="f-sel" value="2026-04" onchange="renderDiario()">
+                <input type="date" id="dia-d1" class="f-sel" value="2026-04-01" onchange="renderDiario()">
               </div>
               <div class="f-group">
                 <label>Hasta</label>
-                <input type="month" id="dia-d2" class="f-sel" value="2026-04" onchange="renderDiario()">
+                <input type="date" id="dia-d2" class="f-sel" value="2026-04-30" onchange="renderDiario()">
               </div>
             </div>
           </div>
@@ -2316,11 +2336,11 @@
             <div class="pa">
               <div class="f-group">
                 <label>Desde</label>
-                <input type="month" id="cir-d1" class="f-sel" value="2026-04" onchange="renderCirion()">
+                <input type="date" id="cir-d1" class="f-sel" value="2026-04-01" onchange="renderCirion()">
               </div>
               <div class="f-group">
                 <label>Hasta</label>
-                <input type="month" id="cir-d2" class="f-sel" value="2026-04" onchange="renderCirion()">
+                <input type="date" id="cir-d2" class="f-sel" value="2026-04-30" onchange="renderCirion()">
               </div>
               <button class="btn-exp" onclick="exportTab('cirion')">📊 Exportar</button>
             </div>
@@ -2392,11 +2412,11 @@
             <div class="pa">
               <div class="f-group">
                 <label>Desde</label>
-                <input type="month" id="lib-d1" class="f-sel" value="2026-04" onchange="renderLiberty()">
+                <input type="date" id="lib-d1" class="f-sel" value="2026-04-01" onchange="renderLiberty()">
               </div>
               <div class="f-group">
                 <label>Hasta</label>
-                <input type="month" id="lib-d2" class="f-sel" value="2026-04" onchange="renderLiberty()">
+                <input type="date" id="lib-d2" class="f-sel" value="2026-04-30" onchange="renderLiberty()">
               </div>
               <button class="btn-exp" onclick="exportTab('liberty')">📊 Exportar</button>
             </div>
@@ -2454,11 +2474,11 @@
             <div class="pa">
               <div class="f-group">
                 <label>Desde</label>
-                <input type="month" id="ban-d1" class="f-sel" value="2026-04" onchange="renderBanca()">
+                <input type="date" id="ban-d1" class="f-sel" value="2026-04-01" onchange="renderBanca()">
               </div>
               <div class="f-group">
                 <label>Hasta</label>
-                <input type="month" id="ban-d2" class="f-sel" value="2026-04" onchange="renderBanca()">
+                <input type="date" id="ban-d2" class="f-sel" value="2026-04-30" onchange="renderBanca()">
               </div>
               <button class="btn-exp" onclick="exportTab('banca')">📊 Exportar</button>
             </div>
@@ -2730,12 +2750,19 @@
     function getRange(id1, id2) {
       const d1 = document.getElementById(id1)?.value;
       const d2 = document.getElementById(id2)?.value;
-      if (!d1 || !d2) return [d1 || d2];
-      const start = MONTHS_ISO.indexOf(d1);
-      const end = MONTHS_ISO.indexOf(d2);
-      if (start === -1 || end === -1) return [d1];
-      if (start > end) return [d1];
+      if (!d1 || !d2) return [d1 ? d1.slice(0, 7) : d2 ? d2.slice(0, 7) : MONTHS_ISO[0]];
+      const m1 = d1.slice(0, 7);
+      const m2 = d2.slice(0, 7);
+      const start = MONTHS_ISO.indexOf(m1);
+      const end = MONTHS_ISO.indexOf(m2);
+      if (start === -1 || end === -1) return [m1];
+      if (start > end) return [m1];
       return MONTHS_ISO.slice(start, end + 1);
+    }
+    function getRangeDates(id1, id2) {
+      const d1 = document.getElementById(id1)?.value || '';
+      const d2 = document.getElementById(id2)?.value || '';
+      return { d1, d2 };
     }
     function pct(n, d) { return d ? Math.round(n / d * 100) : 0; }
     function cClass(p) { return p >= 95 ? 'ok' : p >= 75 ? 'warn' : 'bad'; }
@@ -2758,11 +2785,16 @@
     function metaDia(ger, fecha) { return (PPTO_DIARIO[ger] && PPTO_DIARIO[ger][fecha]) || 0; }
 
     // Real from RAW_DATA
-    function prodReal(ger, mes) {
+    function prodReal(ger, mes, d1, d2) {
       const months = Array.isArray(mes) ? mes : [mes];
       return sumBy(RAW.filter(r => {
-        const m = (r.FECHA_FINALIZACION || '').slice(0, 7);
-        return months.includes(m) && (ger === 'TODOS' ? true : r.GERENCIA === ger);
+        const fecha = (r.FECHA_FINALIZACION || '');
+        const m = fecha.slice(0, 7);
+        if (!months.includes(m)) return false;
+        if (ger !== 'TODOS' && r.GERENCIA !== ger) return false;
+        if (d1 && fecha < d1) return false;
+        if (d2 && fecha > d2) return false;
+        return true;
       }), 'VALOR_TOTAL');
     }
     function prodRealMes(mes) { return GERS.reduce((s, g) => s + prodReal(g, mes), 0); }
@@ -3054,12 +3086,13 @@
 
     function renderResumen() {
       const range = getRange('res-d1', 'res-d2');
+      const { d1: resD1, d2: resD2 } = getRangeDates('res-d1', 'res-d2');
       const startIdx = MONTHS_ISO.indexOf(range[0]);
       const endIdx = MONTHS_ISO.indexOf(range[range.length - 1]);
 
       const rangeLbl = range.length === 1 ? MONTHS_LBL[startIdx] + ' 2026' : `${MONTHS_LBL[startIdx]} - ${MONTHS_LBL[endIdx]} 2026`;
 
-      const prodTot = GERS.reduce((s, g) => s + prodReal(g, range), 0);
+      const prodTot = GERS.reduce((s, g) => s + prodReal(g, range, resD1, resD2), 0);
       const metaTot = GERS.reduce((s, g) => s + metaMes(g, range), 0);
       const cump = pct(prodTot, metaTot);
 
@@ -3074,17 +3107,21 @@
           <div class="estado-metric"><span class="estado-metric-val">${rangeLbl}</span><span class="estado-metric-lbl">Periodo</span></div>
           <div class="estado-metric"><span class="estado-metric-val">${fmtCOP(prodTot)}</span><span class="estado-metric-lbl">Producción</span></div>
           <div class="estado-metric"><span class="estado-metric-val">${fmtCOP(metaTot)}</span><span class="estado-metric-lbl">Meta Periodo</span></div>
-          <div class="estado-metric"><span class="estado-metric-val" style="color:${cump>=95?'#4ade80':cump>=75?'#fbbf24':'#f87171'}">${cump}%</span><span class="estado-metric-lbl">%Cump Periodo</span></div>
-          <div class="estado-metric"><span class="estado-metric-val" style="color:${cumpAcumTotal>=95?'#4ade80':cumpAcumTotal>=75?'#fbbf24':'#f87171'}">${cumpAcumTotal}%</span><span class="estado-metric-lbl">%Cump Año</span></div>
+          <div class="estado-metric"><span class="estado-metric-val" style="color:${cump >= 95 ? '#4ade80' : cump >= 75 ? '#fbbf24' : '#f87171'}">${cump}%</span><span class="estado-metric-lbl">%Cump Periodo</span></div>
+          <div class="estado-metric"><span class="estado-metric-val" style="color:${cumpAcumTotal >= 95 ? '#4ade80' : cumpAcumTotal >= 75 ? '#fbbf24' : '#f87171'}">${cumpAcumTotal}%</span><span class="estado-metric-lbl">%Cump Año</span></div>
           <div class="estado-metric highlight"><span class="estado-metric-val">${fmtCOP(metaAnualTotal)}</span><span class="estado-metric-lbl">Meta Anual 2026</span></div>`;
       }
 
       const grid = document.getElementById('res-unified-grid');
-      if (grid) { grid.innerHTML = GERS.map(g => renderUnifiedProjectCard(g, range)).join(''); }
+      if (grid) { grid.innerHTML = GERS.map(g => renderUnifiedProjectCard(g, range, resD1, resD2)).join(''); }
 
       // Tendencia — Siempre 12 meses, filtrable por proyecto
       const prodM = MONTHS_ISO.map(m => prodReal(_trendGer, m));
       const metaM = MONTHS_ISO.map(m => metaMes(_trendGer, m));
+      const diffM = MONTHS_ISO.map((m, i) => {
+        const diff = prodM[i] - metaM[i];
+        return diff; // negativo = faltó, positivo = superó
+      });
 
       const tendColor = _trendGer === 'TODOS' ? 'rgba(0,29,98,.82)' : GC[_trendGer] + 'cc';
 
@@ -3112,15 +3149,48 @@
             label: 'Meta Proyectada', data: metaM, type: 'line', borderColor: '#C5D336',
             backgroundColor: 'rgba(197,211,54,.08)', borderWidth: 3, fill: true, tension: .4, pointRadius: 4, order: 0,
             datalabels: { display: false }
+          },
+          {
+            label: 'Diferencia (Real − Meta)', data: diffM, type: 'line',
+            borderColor: 'rgba(239,68,68,0.85)',
+            backgroundColor: 'rgba(239,68,68,0.07)',
+            borderWidth: 2, borderDash: [5, 3],
+            pointBackgroundColor: diffM.map(v => v >= 0 ? '#22c55e' : '#ef4444'),
+            pointRadius: 5, pointHoverRadius: 7,
+            fill: false, tension: .3, order: 0,
+            datalabels: {
+              display: ctx => {
+                const v = ctx.dataset.data[ctx.dataIndex];
+                // Solo mostrar si hay dato de producción o meta
+                return prodM[ctx.dataIndex] > 0 || metaM[ctx.dataIndex] > 0;
+              },
+              anchor: v => v >= 0 ? 'end' : 'start',
+              align: v => v >= 0 ? 'top' : 'bottom',
+              offset: 4,
+              color: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#16a34a' : '#dc2626',
+              font: { family: "'DM Mono', monospace", weight: 'bold', size: 9 },
+              formatter: v => (v >= 0 ? '+' : '') + fmtCOPShort(v)
+            }
           }
         ]
       }, {
         plugins: {
           ...CT.plugins,
-          tooltip: { ...CT.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } },
+          tooltip: {
+            ...CT.plugins.tooltip,
+            callbacks: {
+              label: ctx => {
+                if (ctx.dataset.label === 'Diferencia (Real − Meta)') {
+                  const v = ctx.raw;
+                  return ` ${ctx.dataset.label}: ${v >= 0 ? '+' : ''}${fmtCOP(v)} ${v >= 0 ? '✅ Superado' : '⚠️ Faltó'}`;
+                }
+                return ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}`;
+              }
+            }
+          },
           datalabels: {}
         },
-        layout: { padding: { top: 22 } },
+        layout: { padding: { top: 26 } },
         scales: {
           y: { ticks: { color: '#5c6b8a', callback: v => fmtCOPShort(v) }, grid: { color: 'rgba(0,0,0,.04)' } },
           x: { ticks: { color: '#5c6b8a' }, grid: { display: false } }
@@ -3141,9 +3211,9 @@
       });
     }
 
-    function renderUnifiedProjectCard(ger, range) {
+    function renderUnifiedProjectCard(ger, range, d1, d2) {
       const color = GC[ger];
-      const prod = prodReal(ger, range);
+      const prod = prodReal(ger, range, d1, d2);
       const meta = metaMes(ger, range);
       const cm = pct(prod, meta);
 
@@ -3356,10 +3426,17 @@
     // ══════════════════════════════════════════════
     function renderCirion() {
       const range = getRange('cir-d1', 'cir-d2');
-      const c = RAW.filter(r => r.GERENCIA === 'CIRION');
+      const { d1: cirD1, d2: cirD2 } = getRangeDates('cir-d1', 'cir-d2');
+      const c = RAW.filter(r => {
+        if (r.GERENCIA !== 'CIRION') return false;
+        const f = r.FECHA_FINALIZACION || '';
+        if (cirD1 && f < cirD1) return false;
+        if (cirD2 && f > cirD2) return false;
+        return true;
+      });
       const fin = c.filter(r => (r.ESTADO_ACTIVIDAD || '').toUpperCase().includes('FINAL')).length;
       const vt = sumBy(c, 'VALOR_TOTAL');
-      const prod = prodReal('CIRION', range);
+      const prod = prodReal('CIRION', range, cirD1, cirD2);
       const meta = metaMes('CIRION', range);
       const cp = pct(prod, meta);
 
@@ -3459,10 +3536,17 @@
     // ══════════════════════════════════════════════
     function renderLiberty() {
       const range = getRange('lib-d1', 'lib-d2');
-      const l = RAW.filter(r => r.GERENCIA === 'LIBERTY');
+      const { d1: libD1, d2: libD2 } = getRangeDates('lib-d1', 'lib-d2');
+      const l = RAW.filter(r => {
+        if (r.GERENCIA !== 'LIBERTY') return false;
+        const f = r.FECHA_FINALIZACION || '';
+        if (libD1 && f < libD1) return false;
+        if (libD2 && f > libD2) return false;
+        return true;
+      });
       const fin = l.filter(r => (r.ESTADO_ACTIVIDAD || '').toUpperCase().includes('FINAL')).length;
       const vt = sumBy(l, 'VALOR_TOTAL');
-      const prod = prodReal('LIBERTY', range);
+      const prod = prodReal('LIBERTY', range, libD1, libD2);
       const meta = metaMes('LIBERTY', range);
       const cp = pct(prod, meta);
 
@@ -3524,10 +3608,17 @@
     // ══════════════════════════════════════════════
     function renderBanca() {
       const range = getRange('ban-d1', 'ban-d2');
-      const b = RAW.filter(r => r.GERENCIA === 'BANCA');
+      const { d1: banD1, d2: banD2 } = getRangeDates('ban-d1', 'ban-d2');
+      const b = RAW.filter(r => {
+        if (r.GERENCIA !== 'BANCA') return false;
+        const f = r.FECHA_FINALIZACION || '';
+        if (banD1 && f < banD1) return false;
+        if (banD2 && f > banD2) return false;
+        return true;
+      });
       const fin = b.filter(r => (r.ESTADO_ACTIVIDAD || '').toUpperCase().includes('FINAL')).length;
       const vt = sumBy(b, 'VALOR_TOTAL');
-      const prod = prodReal('BANCA', range);
+      const prod = prodReal('BANCA', range, banD1, banD2);
       const meta = metaMes('BANCA', range);
       const cp = pct(prod, meta);
 
@@ -3689,24 +3780,46 @@
         const est = document.getElementById('det-est')?.value || '';
         const d1 = document.getElementById('det-d1')?.value || '';
         const d2 = document.getElementById('det-d2')?.value || '';
-        const ger = _dGer;
         data = _dGer === 'todos' ? RAW : RAW.filter(r => r.GERENCIA === _dGer);
         if (srch) data = data.filter(r => DCOLS.some(c => String(r[c.k] || '').toLowerCase().includes(srch)));
         if (est) data = data.filter(r => r.ESTADO_ACTIVIDAD === est);
         if (d1) data = data.filter(r => (r.FECHA_FINALIZACION || '') >= d1);
         if (d2) data = data.filter(r => (r.FECHA_FINALIZACION || '') <= d2);
       } else if (tab === 'resumen') {
-        const range = getRange('res-d1', 'res-d2');
-        data = RAW.filter(r => range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+        const { d1, d2 } = getRangeDates('res-d1', 'res-d2');
+        data = RAW.filter(r => {
+          const f = r.FECHA_FINALIZACION || '';
+          if (d1 && f < d1) return false;
+          if (d2 && f > d2) return false;
+          return true;
+        });
       } else if (tab === 'cirion') {
-        const range = getRange('cir-d1', 'cir-d2');
-        data = RAW.filter(r => r.GERENCIA === 'CIRION' && range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+        const { d1, d2 } = getRangeDates('cir-d1', 'cir-d2');
+        data = RAW.filter(r => {
+          if (r.GERENCIA !== 'CIRION') return false;
+          const f = r.FECHA_FINALIZACION || '';
+          if (d1 && f < d1) return false;
+          if (d2 && f > d2) return false;
+          return true;
+        });
       } else if (tab === 'liberty') {
-        const range = getRange('lib-d1', 'lib-d2');
-        data = RAW.filter(r => r.GERENCIA === 'LIBERTY' && range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+        const { d1, d2 } = getRangeDates('lib-d1', 'lib-d2');
+        data = RAW.filter(r => {
+          if (r.GERENCIA !== 'LIBERTY') return false;
+          const f = r.FECHA_FINALIZACION || '';
+          if (d1 && f < d1) return false;
+          if (d2 && f > d2) return false;
+          return true;
+        });
       } else if (tab === 'banca') {
-        const range = getRange('ban-d1', 'ban-d2');
-        data = RAW.filter(r => r.GERENCIA === 'BANCA' && range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+        const { d1, d2 } = getRangeDates('ban-d1', 'ban-d2');
+        data = RAW.filter(r => {
+          if (r.GERENCIA !== 'BANCA') return false;
+          const f = r.FECHA_FINALIZACION || '';
+          if (d1 && f < d1) return false;
+          if (d2 && f > d2) return false;
+          return true;
+        });
       } else if (tab === 'proyeccion') {
         MONTHS_ISO.forEach((m, i) => {
           GERS.forEach(g => {
