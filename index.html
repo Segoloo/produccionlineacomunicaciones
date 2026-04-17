@@ -15,24 +15,25 @@
   <style>
     :root {
       --azul: #001D62;
-      --azul2: #002b8f;
-      --azul3: #0036b0;
+      --azul2: #052c8a;
+      --azul3: #0a3bb6;
       --lima: #C5D336;
       --lima2: #9eaa25;
-      --lima3: rgba(197, 211, 54, .15);
-      --bg: #eef1f8;
+      --lima3: rgba(197, 211, 54, .12);
+      --bg: #f0f3fa;
       --white: #fff;
-      --border: #dde3f0;
-      --tx: #1e2d52;
-      --txm: #5c6b8a;
-      --txl: #99a6c0;
-      --ok: #22c55e;
+      --border: #e2e8f5;
+      --tx: #0f172a;
+      --txm: #475569;
+      --txl: #94a3b8;
+      --ok: #10b981;
       --warn: #f59e0b;
-      --bad: #e8334a;
-      --r: 14px;
-      --rs: 8px;
-      --sh: 0 2px 16px rgba(0, 29, 98, .08), 0 1px 4px rgba(0, 29, 98, .04);
-      --sh2: 0 6px 32px rgba(0, 29, 98, .14), 0 2px 8px rgba(0, 29, 98, .06);
+      --bad: #ef4444;
+      --r: 16px;
+      --rs: 10px;
+      --glass: rgba(255, 255, 255, 0.82);
+      --sh: 0 4px 20px rgba(0, 29, 98, .06), 0 1px 3px rgba(0, 29, 98, .03);
+      --sh2: 0 12px 36px rgba(0, 29, 98, .12), 0 4px 10px rgba(0, 29, 98, .04);
     }
 
     *,
@@ -378,17 +379,19 @@
 
     /* ── TOPBAR ── */
     .topbar {
-      background: var(--azul);
-      border-bottom: 3px solid var(--lima);
+      background: rgba(0, 29, 98, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--lima);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      height: 60px;
+      height: 64px;
       position: sticky;
       top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 20px rgba(0, 29, 98, .3)
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15)
     }
 
     .tb-brand {
@@ -1417,22 +1420,73 @@
       color: var(--bad)
     }
 
+    /* ── FILTERS ── */
+    .pa {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .f-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      padding: 4px 12px;
+      border-radius: var(--rs);
+      border: 1.5px solid var(--border);
+      transition: all .2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02)
+    }
+
+    .f-group:focus-within {
+      border-color: var(--azul);
+      box-shadow: 0 0 0 3px rgba(0, 29, 98, .08)
+    }
+
+    .f-group label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--txl);
+      text-transform: uppercase;
+      letter-spacing: .5px
+    }
+
+    .f-sel {
+      border: none;
+      background: transparent;
+      outline: none;
+      color: var(--tx);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 0
+    }
+
     .btn-exp {
-      padding: 7px 14px;
+      padding: 8px 16px;
       background: var(--lima);
       color: var(--azul);
       border: none;
       border-radius: var(--rs);
       font-family: 'Outfit', sans-serif;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
-      transition: all .2s
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(197, 211, 54, 0.3)
     }
 
     .btn-exp:hover {
       background: var(--lima2);
-      color: #fff
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(197, 211, 54, 0.4)
     }
 
     /* ── UPLOAD ZONE ── */
@@ -1814,22 +1868,15 @@
               <div class="ps">Consolidado Cirion · Liberty · Banca · 2026</div>
             </div>
             <div class="pa">
-              <select id="res-mes-sel" onchange="renderResumen()"
-                style="padding:7px 11px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--tx);outline:none;font-weight:600">
-                <option value="2026-01">Ene 2026</option>
-                <option value="2026-02">Feb 2026</option>
-                <option value="2026-03">Mar 2026</option>
-                <option value="2026-04" selected>Abr 2026</option>
-                <option value="2026-05">May 2026</option>
-                <option value="2026-06">Jun 2026</option>
-                <option value="2026-07">Jul 2026</option>
-                <option value="2026-08">Ago 2026</option>
-                <option value="2026-09">Sep 2026</option>
-                <option value="2026-10">Oct 2026</option>
-                <option value="2026-11">Nov 2026</option>
-                <option value="2026-12">Dic 2026</option>
-              </select>
-              <button class="btn-exp" onclick="exportTab('resumen')">⬇ Exportar</button>
+              <div class="f-group">
+                <label>Desde</label>
+                <input type="month" id="res-d1" class="f-sel" value="2026-04" onchange="renderResumen()">
+              </div>
+              <div class="f-group">
+                <label>Hasta</label>
+                <input type="month" id="res-d2" class="f-sel" value="2026-04" onchange="renderResumen()">
+              </div>
+              <button class="btn-exp" onclick="exportTab('resumen')">📊 Exportar</button>
             </div>
           </div>
           <div class="sband fu fu1" id="res-band"></div>
@@ -1871,27 +1918,22 @@
               <div class="ps">Meta vs producción día a día por proyecto · 2026</div>
             </div>
             <div class="pa">
-              <select id="dia-ger" onchange="renderDiario()"
-                style="padding:7px 11px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--tx);outline:none">
-                <option value="BANCA">Banca</option>
-                <option value="CIRION">Cirion</option>
-                <option value="LIBERTY">Liberty</option>
-              </select>
-              <select id="dia-mes" onchange="renderDiario()"
-                style="padding:7px 11px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--tx);outline:none">
-                <option value="2026-01">Ene</option>
-                <option value="2026-02">Feb</option>
-                <option value="2026-03">Mar</option>
-                <option value="2026-04" selected>Abr</option>
-                <option value="2026-05">May</option>
-                <option value="2026-06">Jun</option>
-                <option value="2026-07">Jul</option>
-                <option value="2026-08">Ago</option>
-                <option value="2026-09">Sep</option>
-                <option value="2026-10">Oct</option>
-                <option value="2026-11">Nov</option>
-                <option value="2026-12">Dic</option>
-              </select>
+              <div class="f-group">
+                <label>Proyecto</label>
+                <select id="dia-ger" class="f-sel" onchange="renderDiario()">
+                  <option value="BANCA">Banca</option>
+                  <option value="CIRION">Cirion</option>
+                  <option value="LIBERTY">Liberty</option>
+                </select>
+              </div>
+              <div class="f-group">
+                <label>Desde</label>
+                <input type="month" id="dia-d1" class="f-sel" value="2026-04" onchange="renderDiario()">
+              </div>
+              <div class="f-group">
+                <label>Hasta</label>
+                <input type="month" id="dia-d2" class="f-sel" value="2026-04" onchange="renderDiario()">
+              </div>
             </div>
           </div>
           <div class="sband fu fu1" id="dia-band"></div>
@@ -1913,11 +1955,13 @@
               <div class="ps">Meta presupuestada por zona / centro de costo · Cirion y Banca</div>
             </div>
             <div class="pa">
-              <select id="zona-ger" onchange="renderZonas()"
-                style="padding:7px 11px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--tx);outline:none">
-                <option value="CIRION">Cirion</option>
-                <option value="BANCA">Banca</option>
-              </select>
+              <div class="f-group">
+                <label>Proyecto</label>
+                <select id="zona-ger" class="f-sel" onchange="renderZonas()">
+                  <option value="CIRION">Cirion</option>
+                  <option value="BANCA">Banca</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="sband fu fu1" id="zona-band"></div>
@@ -1955,7 +1999,17 @@
               <div class="pt" style="color:#001D62">Cirion</div>
               <div class="ps">Assurance · Mantenimiento · Delivery · Zonas PI/PE</div>
             </div>
-            <div class="pa"><button class="btn-exp" onclick="exportTab('cirion')">⬇ Exportar</button></div>
+            <div class="pa">
+              <div class="f-group">
+                <label>Desde</label>
+                <input type="month" id="cir-d1" class="f-sel" value="2026-04" onchange="renderCirion()">
+              </div>
+              <div class="f-group">
+                <label>Hasta</label>
+                <input type="month" id="cir-d2" class="f-sel" value="2026-04" onchange="renderCirion()">
+              </div>
+              <button class="btn-exp" onclick="exportTab('cirion')">📊 Exportar</button>
+            </div>
           </div>
           <div class="sband fu fu1" id="cir-band" style="background:linear-gradient(135deg,#001D62,#0036b0)"></div>
           <div class="slbl fu fu2">KPIs Cirion</div>
@@ -2021,7 +2075,17 @@
               <div class="pt" style="color:#0847a3">Liberty</div>
               <div class="ps">Cali · Medellín · Proyectado vs Real</div>
             </div>
-            <div class="pa"><button class="btn-exp" onclick="exportTab('liberty')">⬇ Exportar</button></div>
+            <div class="pa">
+              <div class="f-group">
+                <label>Desde</label>
+                <input type="month" id="lib-d1" class="f-sel" value="2026-04" onchange="renderLiberty()">
+              </div>
+              <div class="f-group">
+                <label>Hasta</label>
+                <input type="month" id="lib-d2" class="f-sel" value="2026-04" onchange="renderLiberty()">
+              </div>
+              <button class="btn-exp" onclick="exportTab('liberty')">📊 Exportar</button>
+            </div>
           </div>
           <div class="sband fu fu1" id="lib-band" style="background:linear-gradient(135deg,#0847a3,#3b82f6)"></div>
           <div class="slbl fu fu2">KPIs Liberty</div>
@@ -2073,7 +2137,17 @@
               <div class="pt" style="color:#166534">Banca Seguros</div>
               <div class="ps">Redeban CB · Redeban POS · Redes · Zonas</div>
             </div>
-            <div class="pa"><button class="btn-exp" onclick="exportTab('banca')">⬇ Exportar</button></div>
+            <div class="pa">
+              <div class="f-group">
+                <label>Desde</label>
+                <input type="month" id="ban-d1" class="f-sel" value="2026-04" onchange="renderBanca()">
+              </div>
+              <div class="f-group">
+                <label>Hasta</label>
+                <input type="month" id="ban-d2" class="f-sel" value="2026-04" onchange="renderBanca()">
+              </div>
+              <button class="btn-exp" onclick="exportTab('banca')">📊 Exportar</button>
+            </div>
           </div>
           <div class="sband fu fu1" id="ban-band" style="background:linear-gradient(135deg,#166534,#22c55e)"></div>
           <div class="slbl fu fu2">KPIs Banca</div>
@@ -2331,21 +2405,23 @@
     // ── Helpers ────────────────────────────────────────────────────
     function fmtCOP(v) {
       if (v === undefined || v === null || isNaN(v)) return '$0';
-      const absV = Math.abs(v);
-      let suffix = '';
-      let displayVal = v;
-
-      if (absV >= 1_000_000_000) {
-        // Exact formatting for thousands of millions
-        return '$' + new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(v) + ' (Mil Millones)';
-      }
-
       return new Intl.NumberFormat('es-CO', {
         style: 'currency',
         currency: 'COP',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
       }).format(v);
+    }
+
+    function getRange(id1, id2) {
+      const d1 = document.getElementById(id1)?.value;
+      const d2 = document.getElementById(id2)?.value;
+      if (!d1 || !d2) return [d1 || d2];
+      const start = MONTHS_ISO.indexOf(d1);
+      const end = MONTHS_ISO.indexOf(d2);
+      if (start === -1 || end === -1) return [d1];
+      if (start > end) return [d1];
+      return MONTHS_ISO.slice(start, end + 1);
     }
     function pct(n, d) { return d ? Math.round(n / d * 100) : 0; }
     function cClass(p) { return p >= 95 ? 'ok' : p >= 75 ? 'warn' : 'bad'; }
@@ -2356,15 +2432,32 @@
     function spClass(s) { const u = (s || '').toUpperCase(); if (u.includes('FINAL') || u.includes('COMPLET')) return 'fin'; if (u.includes('EJECUC')) return 'ejec'; if (u.includes('PEND')) return 'pend'; if (u.includes('CANCEL')) return 'canc'; return 'def'; }
 
     // Meta / Presupuesto
-    function metaMes(ger, mes) { return (META_MES[ger] && META_MES[ger][mes]) || 0; }
+    function metaMes(ger, mes) { 
+      if (Array.isArray(mes)) return mes.reduce((s, m) => s + ((META_MES[ger] && META_MES[ger][m]) || 0), 0);
+      return (META_MES[ger] && META_MES[ger][mes]) || 0; 
+    }
     function metaAnual(ger) { return MONTHS_ISO.reduce((s, m) => s + metaMes(ger, m), 0); }
     function metaDia(ger, fecha) { return (PPTO_DIARIO[ger] && PPTO_DIARIO[ger][fecha]) || 0; }
 
     // Real from RAW_DATA
-    function prodReal(ger, mes) { return sumBy(RAW.filter(r => { const m = (r.FECHA_FINALIZACION || '').slice(0, 7); return m === mes && (ger === 'TODOS' ? true : r.GERENCIA === ger) }), 'VALOR_TOTAL'); }
+    function prodReal(ger, mes) {
+      const months = Array.isArray(mes) ? mes : [mes];
+      return sumBy(RAW.filter(r => {
+        const m = (r.FECHA_FINALIZACION || '').slice(0, 7);
+        return months.includes(m) && (ger === 'TODOS' ? true : r.GERENCIA === ger);
+      }), 'VALOR_TOTAL');
+    }
     function prodRealMes(mes) { return GERS.reduce((s, g) => s + prodReal(g, mes), 0); }
-    function prodAcumYTD(ger, hasta) { const idx = MONTHS_ISO.indexOf(hasta); return MONTHS_ISO.slice(0, idx + 1).reduce((s, m) => s + prodReal(ger, m), 0); }
-    function metaAcumYTD(ger, hasta) { const idx = MONTHS_ISO.indexOf(hasta); return MONTHS_ISO.slice(0, idx + 1).reduce((s, m) => s + metaMes(ger, m), 0); }
+    function prodAcumYTD(ger, hasta) { 
+      const h = Array.isArray(hasta) ? hasta[hasta.length-1] : hasta;
+      const idx = MONTHS_ISO.indexOf(h); 
+      return MONTHS_ISO.slice(0, idx + 1).reduce((s, m) => s + prodReal(ger, m), 0); 
+    }
+    function metaAcumYTD(ger, hasta) { 
+      const h = Array.isArray(hasta) ? hasta[hasta.length-1] : hasta;
+      const idx = MONTHS_ISO.indexOf(h); 
+      return MONTHS_ISO.slice(0, idx + 1).reduce((s, m) => s + metaMes(ger, m), 0); 
+    }
     // Daily data per gerencia/month from RAW
     function rawDayMap(ger, mes) {
       const m = {};
@@ -2632,77 +2725,76 @@
     // RESUMEN
     // ══════════════════════════════════════════════
     function renderResumen() {
-      const mes = document.getElementById('res-mes-sel')?.value || '2026-04';
-      const mesIdx = MONTHS_ISO.indexOf(mes);
-      const mesLbl = MONTHS_LBL[mesIdx] + ' 2026';
+      const range = getRange('res-d1', 'res-d2');
+      const startIdx = MONTHS_ISO.indexOf(range[0]);
+      const endIdx = MONTHS_ISO.indexOf(range[range.length - 1]);
+      
+      const rangeLbl = range.length === 1 ? MONTHS_LBL[startIdx] + ' 2026' : `${MONTHS_LBL[startIdx]} - ${MONTHS_LBL[endIdx]} 2026`;
 
-      const prodTot = GERS.reduce((s, g) => s + prodReal(g, mes), 0);
-      const metaTot = GERS.reduce((s, g) => s + metaMes(g, mes), 0);
+      const prodTot = GERS.reduce((s, g) => s + prodReal(g, range), 0);
+      const metaTot = GERS.reduce((s, g) => s + metaMes(g, range), 0);
       const cump = pct(prodTot, metaTot);
-      const prodAcum = GERS.reduce((s, g) => s + prodAcumYTD(g, mes), 0);
-      const metaAcum = GERS.reduce((s, g) => s + metaAcumYTD(g, mes), 0);
+      
+      const lastMonth = range[range.length - 1];
+      const prodAcum = GERS.reduce((s, g) => s + prodAcumYTD(g, lastMonth), 0);
+      const metaAcum = GERS.reduce((s, g) => s + metaAcumYTD(g, lastMonth), 0);
       const cumpAcum = pct(prodAcum, metaAcum);
+      const metaAnualTotal = GERS.reduce((s, g) => s + metaAnual(g), 0);
 
       document.getElementById('res-band').innerHTML = `
-    <div class="si"><span class="sn lima">${mesLbl}</span><span class="sl">Mes filtrado</span></div>
-    <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real mes</span></div>
-    <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta (proyección) mes</span></div>
-    <div class="si"><span class="sn" style="color:${cump >= 95 ? '#4ade80' : cump >= 75 ? '#fbbf24' : '#f87171'}">${cump}%</span><span class="sl">%Cumplimiento mes</span></div>
-    <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Producción acum YTD</span></div>
-    <div class="si"><span class="sn" style="color:${cumpAcum >= 95 ? '#4ade80' : cumpAcum >= 75 ? '#fbbf24' : '#f87171'}">${cumpAcum}%</span><span class="sl">%Cump acum YTD</span></div>
-    <div class="si"><span class="sn lima">${fmtCOP(GERS.reduce((s, g) => s + metaAnual(g), 0))}</span><span class="sl">Meta anual 2026</span></div>`;
+    <div class="si"><span class="sn lima">${rangeLbl}</span><span class="sl">Periodo filtrado</span></div>
+    <div class="si"><span class="sn">${fmtCOP(prodTot)}</span><span class="sl">Producción real</span></div>
+    <div class="si"><span class="sn">${fmtCOP(metaTot)}</span><span class="sl">Meta proyectada</span></div>
+    <div class="si"><span class="sn" style="color:${cump >= 95 ? 'var(--ok)' : cump >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cump}%</span><span class="sl">%Cumplimiento</span></div>
+    <div class="si"><span class="sn">${fmtCOP(prodAcum)}</span><span class="sl">Prod. Acum YTD</span></div>
+    <div class="si"><span class="sn" style="color:${cumpAcum >= 95 ? 'var(--ok)' : cumpAcum >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cumpAcum}%</span><span class="sl">%Cump YTD</span></div>
+    <div class="si"><span class="sn lima">${fmtCOP(metaAnualTotal)}</span><span class="sl">Meta anual 2026</span></div>`;
 
-      // ── Unified Project Cards ──
       const grid = document.getElementById('res-unified-grid');
-      if (grid) {
-        grid.innerHTML = GERS.map(g => renderUnifiedProjectCard(g, mes)).join('');
-      }
+      if (grid) { grid.innerHTML = GERS.map(g => renderUnifiedProjectCard(g, range)).join(''); }
 
-      // Tendencia — Meses acumulados
-      const visibleMonths = MONTHS_ISO.slice(0, mesIdx + 1);
-      const visibleLbls = MONTHS_LBL.slice(0, mesIdx + 1);
-      const prodM = visibleMonths.map(m => prodRealMes(m));
-      const metaM = visibleMonths.map(m => GERS.reduce((s, g) => s + metaMes(g, m), 0));
+      // Tendencia — Siempre 12 meses
+      const prodM = MONTHS_ISO.map(m => prodRealMes(m));
+      const metaM = MONTHS_ISO.map(m => GERS.reduce((s, g) => s + metaMes(g, m), 0));
+      
       mkC('ch-res-tend', 'bar', {
-        labels: visibleLbls,
+        labels: MONTHS_LBL,
         datasets: [
-          { label: 'Producción Real', data: prodM, backgroundColor: 'rgba(0,29,98,.75)', borderRadius: 2, order: 1 },
+          { label: 'Producción Real', data: prodM, backgroundColor: 'rgba(0,29,98,.82)', borderRadius: 4, order: 1 },
           { label: 'Meta Proyectada', data: metaM, type: 'line', borderColor: '#C5D336', backgroundColor: 'rgba(197,211,54,.08)', borderWidth: 3, fill: true, tension: .4, pointRadius: 4, order: 0 }
         ]
       }, {
         plugins: { ...CT.plugins, tooltip: { ...CT.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } } },
-        scales: { y: { ticks: { color: '#5c6b8a', callback: v => fmtCOP(v) }, grid: { color: 'rgba(0,0,0,.05)' } }, x: { ticks: { color: '#5c6b8a' }, grid: { display: false } } }
+        scales: { y: { ticks: { color: '#5c6b8a', callback: v => fmtCOP(v) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { ticks: { color: '#5c6b8a' }, grid: { display: false } } }
       });
 
-      // Dona distribución — solo mes seleccionado
-      const donaProd = GERS.map(g => prodReal(g, mes));
+      const donaProd = GERS.map(g => prodReal(g, range));
       mkC('ch-res-dona', 'doughnut', {
         labels: GERS,
-        datasets: [{ data: donaProd, backgroundColor: GERS.map(g => GC[g]), borderWidth: 0, hoverOffset: 6 }]
+        datasets: [{ data: donaProd, backgroundColor: GERS.map(g => GC[g]), borderWidth: 0, hoverOffset: 10 }]
       }, {
-        cutout: '64%',
+        cutout: '68%',
         plugins: {
           ...CT.plugins,
           legend: { ...CT.plugins.legend, position: 'bottom' },
-          datalabels: {
-            color: '#fff', font: { weight: 'bold', size: 11 }, formatter: (value, context) => {
-              const data = context.chart.data.datasets[0].data;
-              const tot = data.reduce((a, b) => a + b, 0);
-              return tot ? ((value / tot) * 100).toFixed(1) + '%' : '0%';
-            }
-          }
+          datalabels: { color: '#fff', font: { weight: 'bold', size: 11 }, formatter: (v, ctx) => { const d = ctx.chart.data.datasets[0].data; const t = d.reduce((a, b) => a + b, 0); return t ? ((v / t) * 100).toFixed(1) + '%' : '0%'; } }
         }
       });
     }
 
-    function renderUnifiedProjectCard(ger, mes) {
+    function renderUnifiedProjectCard(ger, range) {
       const color = GC[ger];
-      const prod = prodReal(ger, mes);
-      const meta = metaMes(ger, mes);
+      const prod = prodReal(ger, range);
+      const meta = metaMes(ger, range);
       const cm = pct(prod, meta);
-      const prodA = prodAcumYTD(ger, mes);
-      const metaA = metaAcumYTD(ger, mes);
+      
+      const lastMonth = range[range.length - 1];
+      const prodA = prodAcumYTD(ger, lastMonth);
+      const metaA = metaAcumYTD(ger, lastMonth);
       const ca = pct(prodA, metaA);
+      
+      const metaAnualVal = metaAnual(ger);
+      const progresoAnual = pct(prodA, metaAnualVal);
       const icons = { CIRION: '🔵', LIBERTY: '🟢', BANCA: '🏦' };
 
       return `
@@ -2714,18 +2806,18 @@
       <div class="km-body">
         <div class="km-main">
           <div class="km-val-box">
-            <span class="km-label">Producción Mes</span>
+            <span class="km-label">Producción Periodo</span>
             <span class="km-value">${fmtCOP(prod)}</span>
           </div>
           <div class="km-val-box">
-            <span class="km-label">Meta Mes</span>
+            <span class="km-label">Meta Periodo</span>
             <span class="km-value" style="color:var(--lima2)">${fmtCOP(meta)}</span>
           </div>
         </div>
         
         <div class="km-progress-area">
           <div class="km-prog-label">
-            <span class="km-prog-txt">Cumplimiento Mensual</span>
+            <span class="km-prog-txt">Cumplimiento Periodo</span>
             <span class="km-prog-pct" style="color:${color}">${cm}%</span>
           </div>
           <div class="km-bar"><div class="km-fill" style="width:${Math.min(cm, 100)}%;background:${color}"></div></div>
@@ -2733,16 +2825,26 @@
 
         <div class="km-footer">
           <div class="km-sub-box">
-            <span class="km-sub-label">Prod. Acum YTD</span>
+            <span class="km-sub-label">Producción YTD</span>
             <span class="km-sub-val">${fmtCOP(prodA)}</span>
           </div>
           <div class="km-sub-box">
-            <span class="km-sub-label">% Cump. Acum</span>
+            <span class="km-sub-label">Cump. YTD</span>
             <span class="km-sub-val" style="color:${color}">${ca}%</span>
           </div>
         </div>
-        <div style="margin-top:12px; font-size:9px; color:var(--txl); text-align:right; font-weight:600">
-           Ref: Meta Anual ${fmtCOP(metaAnual(ger))}
+
+        <div class="km-ytd-bar-area" style="margin-top:16px; border-top:1px solid var(--border); padding-top:12px">
+          <div class="km-prog-label">
+            <span class="km-prog-txt">Progreso vs Meta Anual</span>
+            <span class="km-prog-pct" style="color:var(--txm)">${progresoAnual}%</span>
+          </div>
+          <div class="km-bar" style="height:6px; background:#e2e8f0">
+             <div class="km-fill" style="width:${Math.min(progresoAnual, 100)}%; background:linear-gradient(90deg, ${color}, var(--lima))"></div>
+          </div>
+          <div style="margin-top:6px; font-size:9px; color:var(--txl); text-align:right; font-weight:700">
+             META ANUAL 2026: ${fmtCOP(metaAnualVal)}
+          </div>
         </div>
       </div>
     </div>`;
@@ -2767,21 +2869,26 @@
     // ══════════════════════════════════════════════
     function renderDiario() {
       const ger = document.getElementById('dia-ger')?.value || 'BANCA';
-      const mes = document.getElementById('dia-mes')?.value || '2026-04';
-      const mesIdx = MONTHS_ISO.indexOf(mes);
-      const mesLbl = MONTHS_LBL[mesIdx];
+      const range = getRange('dia-d1', 'dia-d2');
       const color = GC[ger];
+      
+      const startLbl = MONTHS_LBL[MONTHS_ISO.indexOf(range[0])];
+      const endLbl = MONTHS_LBL[MONTHS_ISO.indexOf(range[range.length - 1])];
+      const periodLbl = range.length === 1 ? `${startLbl} 2026` : `${startLbl} - ${endLbl} 2026`;
 
-      document.getElementById('dia-subtit').textContent = `${ger} · ${mesLbl} 2026`;
+      document.getElementById('dia-subtit').textContent = `${ger} · ${periodLbl}`;
 
-      // Get all working days in this month from PPTO_DIARIO
+      // Get all days in the range
       const pptoGer = PPTO_DIARIO[ger] || {};
-      const diasPpto = Object.entries(pptoGer).filter(([d]) => d.startsWith(mes)).sort(([a], [b]) => a.localeCompare(b));
+      const diasPpto = Object.entries(pptoGer).filter(([d]) => range.includes(d.slice(0, 7))).sort(([a], [b]) => a.localeCompare(b));
       const fechasLab = diasPpto.map(([d]) => d);
       const metaD = diasPpto.map(([, v]) => v);
 
       // Real from RAW
-      const realMap = rawDayMap(ger, mes);
+      const realMap = {};
+      RAW.filter(r => r.GERENCIA === ger && range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)))
+        .forEach(r => { const d = (r.FECHA_FINALIZACION || '').slice(0, 10); if (d) realMap[d] = (realMap[d] || 0) + (parseFloat(r.VALOR_TOTAL) || 0); });
+      
       const realD = fechasLab.map(d => realMap[d] || 0);
 
       // Acumulados
@@ -2795,40 +2902,36 @@
       const totalMeta = metaD.reduce((s, v) => s + v, 0);
       const totalReal = realD.reduce((s, v) => s + v, 0);
       const cp = pct(totalReal, totalMeta);
-      const daysReal = realD.filter(v => v > 0).length;
 
-      // Summary band
       document.getElementById('dia-band').innerHTML = `
     <div class="si"><span class="sn lima">${ger}</span><span class="sl">Proyecto</span></div>
-    <div class="si"><span class="sn">${mesLbl} 2026</span><span class="sl">Mes analizado</span></div>
-    <div class="si"><span class="sn">${fmtCOP(totalMeta)}</span><span class="sl">Meta total mes</span></div>
+    <div class="si"><span class="sn">${periodLbl}</span><span class="sl">Periodo analizado</span></div>
+    <div class="si"><span class="sn">${fmtCOP(totalMeta)}</span><span class="sl">Meta total periodo</span></div>
     <div class="si"><span class="sn">${fmtCOP(totalReal)}</span><span class="sl">Producción real</span></div>
-    <div class="si"><span class="sn" style="color:${cp >= 95 ? '#4ade80' : cp >= 75 ? '#fbbf24' : '#f87171'}">${cp}%</span><span class="sl">%Cumplimiento</span></div>
-    <div class="si"><span class="sn">${fechasLab.length}</span><span class="sl">Días laborales</span></div>`;
+    <div class="si"><span class="sn" style="color:${cp >= 95 ? 'var(--ok)' : cp >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cp}%</span><span class="sl">%Cumplimiento</span></div>
+    <div class="si"><span class="sn">${fechasLab.length}</span><span class="sl">Días con meta</span></div>`;
 
-      // Chart día a día
-      const lbl = fechasLab.map(d => d.slice(8)); // day number only
+      const lbl = fechasLab.map(d => d.slice(5)); // month-day
       mkC('ch-dia-main', 'bar', {
         labels: lbl,
         datasets: [
-          { label: 'Meta Día', data: metaD, backgroundColor: 'rgba(197,211,54,.25)', borderColor: '#C5D336', borderWidth: 1.5, borderRadius: 3, borderSkipped: false },
-          { label: 'Producción Real', data: realD, backgroundColor: color + 'cc', borderColor: color, borderWidth: 0, borderRadius: 3, borderSkipped: false }
+          { label: 'Meta Día', data: metaD, backgroundColor: 'rgba(197,211,54,.3)', borderColor: '#C5D336', borderWidth: 1.5, borderRadius: 3 },
+          { label: 'Producción Real', data: realD, backgroundColor: color + 'cc', borderRadius: 3 }
         ]
       }, {
-        plugins: { ...CT.plugins, legend: { ...CT.plugins.legend, position: 'top' }, tooltip: { ...CT.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } } },
-        scales: { y: { ticks: { color: '#5c6b8a', callback: v => fmtCOP(v) }, grid: { color: 'rgba(0,0,0,.05)' } }, x: { ticks: { color: '#5c6b8a', font: { size: 10 } }, grid: { display: false } } }
+        plugins: { ...CT.plugins, legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } } },
+        scales: { y: { ticks: { color: '#5c6b8a', callback: v => fmtCOP(v) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { ticks: { color: '#5c6b8a', font: { size: 9 }, maxRotation: 90, minRotation: 90 }, grid: { display: false } } }
       });
 
-      // Acumulado
       mkC('ch-dia-acum', 'line', {
         labels: lbl,
         datasets: [
-          { label: 'Meta Acumulada', data: metaAcArr, borderColor: '#C5D336', backgroundColor: 'rgba(197,211,54,.12)', borderWidth: 2, fill: true, tension: .35, borderDash: [5, 4], pointRadius: 2 },
-          { label: 'Real Acumulado', data: realAcArr, borderColor: color, backgroundColor: color + '18', borderWidth: 2.5, fill: false, tension: .35, pointRadius: 2 }
+          { label: 'Meta Acumulada', data: metaAcArr, borderColor: '#C5D336', backgroundColor: 'rgba(197,211,54,.1)', borderWidth: 2, fill: true, tension: .35, borderDash: [5, 4], pointRadius: 0 },
+          { label: 'Real Acumulado', data: realAcArr, borderColor: color, backgroundColor: color + '15', borderWidth: 3, fill: false, tension: .35, pointRadius: 2 }
         ]
       }, {
-        plugins: { ...CT.plugins, legend: { ...CT.plugins.legend, position: 'top' }, tooltip: { ...CT.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } } },
-        scales: { y: { ticks: { color: '#5c6b8a', callback: v => fmtCOP(v) }, grid: { color: 'rgba(0,0,0,.05)' } }, x: { ticks: { color: '#5c6b8a', font: { size: 10 } }, grid: { display: false } } }
+        plugins: { ...CT.plugins, legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } } },
+        scales: { y: { ticks: { color: '#5c6b8a', callback: v => fmtCOP(v) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { ticks: { color: '#5c6b8a', font: { size: 9 }, maxRotation: 90, minRotation: 90 }, grid: { display: false } } }
       });
     }
 
@@ -2897,27 +3000,29 @@
     // CIRION
     // ══════════════════════════════════════════════
     function renderCirion() {
-      const mes = document.getElementById('res-mes-sel')?.value || '2026-04';
+      const range = getRange('cir-d1', 'cir-d2');
       const c = RAW.filter(r => r.GERENCIA === 'CIRION');
       const fin = c.filter(r => (r.ESTADO_ACTIVIDAD || '').toUpperCase().includes('FINAL')).length;
       const vt = sumBy(c, 'VALOR_TOTAL');
-      const prod = prodReal('CIRION', mes);
-      const meta = metaMes('CIRION', mes);
+      const prod = prodReal('CIRION', range);
+      const meta = metaMes('CIRION', range);
       const cp = pct(prod, meta);
 
       document.getElementById('cir-band').innerHTML = `
     <div class="si"><span class="sn">${c.length.toLocaleString()}</span><span class="sl">Total actividades</span></div>
     <div class="si"><span class="sn lima">${Math.round(fin / c.length * 100) || 0}%</span><span class="sl">Finalizadas</span></div>
     <div class="si"><span class="sn">${fmtCOP(vt)}</span><span class="sl">Producción real</span></div>
-    <div class="si"><span class="sn">${fmtCOP(meta)}</span><span class="sl">Meta ${mes}</span></div>
-    <div class="si"><span class="sn" style="color:${cp >= 95 ? '#4ade80' : cp >= 75 ? '#fbbf24' : '#f87171'}">${cp}%</span><span class="sl">%Cump mes</span></div>
-    <div class="si"><span class="sn lima">${fmtCOP(metaAnual('CIRION'))}</span><span class="sl">Meta anual</span></div>`;
+    <div class="si"><span class="sn">${fmtCOP(meta)}</span><span class="sl">Meta Periodo</span></div>
+    <div class="si"><span class="sn" style="color:${cp >= 95 ? 'var(--ok)' : cp >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cp}%</span><span class="sl">%Cump Periodo</span></div>
+    <div class="si"><span class="sn lima">${fmtCOP(metaAnual('CIRION'))}</span><span class="sl">Meta anual 2026</span></div>`;
+
+      const periodLbl = range.length === 1 ? MONTHS_LBL[MONTHS_ISO.indexOf(range[0])] : 'Periodo';
 
       document.getElementById('cir-kpis').innerHTML = [
         kpi('Total Actividades', c.length.toLocaleString(), 'Cirion', '', '🔵'),
         kpi('Finalizadas', fin.toLocaleString(), `${Math.round(fin / c.length * 100) || 0}%`, 'ok', '✅', Math.round(fin / c.length * 100) || 0),
-        kpi('Producción Real', fmtCOP(vt), 'Valor total', '', '💰'),
-        kpi('%Cump Mes', cp + '%', `${mes} · ${fmtCOP(prod)} / ${fmtCOP(meta)}`, cTClass(cp), '🎯', cp),
+        kpi('Producción Real', fmtCOP(vt), 'Valor total histórico', '', '💰'),
+        kpi('%Cump Periodo', cp + '%', `${periodLbl} · ${fmtCOP(prod)} / ${fmtCOP(meta)}`, cTClass(cp), '🎯', cp),
         kpi('Meta Anual', fmtCOP(metaAnual('CIRION')), 'Presupuesto 2026', 'lima', '📆'),
         kpi('Zonas', Object.keys(CIRION_ZONAS).length.toString(), 'Centros de costo activos', 'lima', '📍'),
       ].join('');
@@ -2998,28 +3103,30 @@
     // LIBERTY
     // ══════════════════════════════════════════════
     function renderLiberty() {
-      const mes = document.getElementById('res-mes-sel')?.value || '2026-04';
+      const range = getRange('lib-d1', 'lib-d2');
       const l = RAW.filter(r => r.GERENCIA === 'LIBERTY');
       const fin = l.filter(r => (r.ESTADO_ACTIVIDAD || '').toUpperCase().includes('FINAL')).length;
       const vt = sumBy(l, 'VALOR_TOTAL');
-      const prod = prodReal('LIBERTY', mes);
-      const meta = metaMes('LIBERTY', mes);
+      const prod = prodReal('LIBERTY', range);
+      const meta = metaMes('LIBERTY', range);
       const cp = pct(prod, meta);
 
       document.getElementById('lib-band').innerHTML = `
     <div class="si"><span class="sn">${l.length.toLocaleString()}</span><span class="sl">Total actividades</span></div>
     <div class="si"><span class="sn lima">${Math.round(fin / (l.length || 1) * 100)}%</span><span class="sl">Finalizadas</span></div>
     <div class="si"><span class="sn">${fmtCOP(vt)}</span><span class="sl">Producción real</span></div>
-    <div class="si"><span class="sn">${fmtCOP(meta)}</span><span class="sl">Meta ${mes}</span></div>
-    <div class="si"><span class="sn" style="color:${cp >= 95 ? '#4ade80' : cp >= 75 ? '#fbbf24' : '#f87171'}">${cp}%</span><span class="sl">%Cump mes</span></div>
-    <div class="si"><span class="sn lima">${fmtCOP(metaAnual('LIBERTY'))}</span><span class="sl">Meta anual</span></div>`;
+    <div class="si"><span class="sn">${fmtCOP(meta)}</span><span class="sl">Meta Periodo</span></div>
+    <div class="si"><span class="sn" style="color:${cp >= 95 ? 'var(--ok)' : cp >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cp}%</span><span class="sl">%Cump Periodo</span></div>
+    <div class="si"><span class="sn lima">${fmtCOP(metaAnual('LIBERTY'))}</span><span class="sl">Meta anual 2026</span></div>`;
+
+      const periodLbl = range.length === 1 ? MONTHS_LBL[MONTHS_ISO.indexOf(range[0])] : 'Periodo';
 
       document.getElementById('lib-kpis').innerHTML = [
         kpi('Total Actividades', l.length.toLocaleString(), 'Liberty', '', '🟢'),
         kpi('Finalizadas', fin.toLocaleString(), `${Math.round(fin / (l.length || 1) * 100)}%`, 'ok', '✅', Math.round(fin / (l.length || 1) * 100)),
-        kpi('Producción Real', fmtCOP(vt), '', '', '💰'),
-        kpi('%Cump Mes', cp + '%', `${mes}`, cTClass(cp), '🎯', cp),
-        kpi('Meta Anual', fmtCOP(metaAnual('LIBERTY')), '', 'lima', '📆'),
+        kpi('Producción Real', fmtCOP(vt), 'Valor total histórico', '', '💰'),
+        kpi('%Cump Periodo', cp + '%', `${periodLbl} · ${fmtCOP(prod)} / ${fmtCOP(meta)}`, cTClass(cp), '🎯', cp),
+        kpi('Meta Anual', fmtCOP(metaAnual('LIBERTY')), 'Presupuesto 2026', 'lima', '📆'),
         kpi('Zonas', '2', 'Cali · Medellín', 'lima', '📍'),
       ].join('');
 
@@ -3061,28 +3168,30 @@
     // BANCA
     // ══════════════════════════════════════════════
     function renderBanca() {
-      const mes = document.getElementById('res-mes-sel')?.value || '2026-04';
+      const range = getRange('ban-d1', 'ban-d2');
       const b = RAW.filter(r => r.GERENCIA === 'BANCA');
       const fin = b.filter(r => (r.ESTADO_ACTIVIDAD || '').toUpperCase().includes('FINAL')).length;
       const vt = sumBy(b, 'VALOR_TOTAL');
-      const prod = prodReal('BANCA', mes);
-      const meta = metaMes('BANCA', mes);
+      const prod = prodReal('BANCA', range);
+      const meta = metaMes('BANCA', range);
       const cp = pct(prod, meta);
 
       document.getElementById('ban-band').innerHTML = `
     <div class="si"><span class="sn">${b.length.toLocaleString()}</span><span class="sl">Total actividades</span></div>
     <div class="si"><span class="sn lima">${Math.round(fin / (b.length || 1) * 100)}%</span><span class="sl">Finalizadas</span></div>
     <div class="si"><span class="sn">${fmtCOP(vt)}</span><span class="sl">Producción real</span></div>
-    <div class="si"><span class="sn">${fmtCOP(meta)}</span><span class="sl">Meta ${mes}</span></div>
-    <div class="si"><span class="sn" style="color:${cp >= 95 ? '#4ade80' : cp >= 75 ? '#fbbf24' : '#f87171'}">${cp}%</span><span class="sl">%Cump mes</span></div>
-    <div class="si"><span class="sn lima">${fmtCOP(metaAnual('BANCA'))}</span><span class="sl">Meta anual</span></div>`;
+    <div class="si"><span class="sn">${fmtCOP(meta)}</span><span class="sl">Meta Periodo</span></div>
+    <div class="si"><span class="sn" style="color:${cp >= 95 ? 'var(--ok)' : cp >= 75 ? 'var(--warn)' : 'var(--bad)'}">${cp}%</span><span class="sl">%Cump Periodo</span></div>
+    <div class="si"><span class="sn lima">${fmtCOP(metaAnual('BANCA'))}</span><span class="sl">Meta anual 2026</span></div>`;
+
+      const periodLbl = range.length === 1 ? MONTHS_LBL[MONTHS_ISO.indexOf(range[0])] : 'Periodo';
 
       document.getElementById('ban-kpis').innerHTML = [
         kpi('Total Actividades', b.length.toLocaleString(), 'Banca', '', '🏦'),
         kpi('Finalizadas', fin.toLocaleString(), `${Math.round(fin / (b.length || 1) * 100)}%`, 'ok', '✅', Math.round(fin / (b.length || 1) * 100)),
-        kpi('Producción Real', fmtCOP(vt), '', '', '💰'),
-        kpi('%Cump Mes', cp + '%', `${mes}`, cTClass(cp), '🎯', cp),
-        kpi('Meta Anual', fmtCOP(metaAnual('BANCA')), '', 'lima', '📆'),
+        kpi('Producción Real', fmtCOP(vt), 'Valor total histórico', '', '💰'),
+        kpi('%Cump Periodo', cp + '%', `${periodLbl} · ${fmtCOP(prod)} / ${fmtCOP(meta)}`, cTClass(cp), '🎯', cp),
+        kpi('Meta Anual', fmtCOP(metaAnual('BANCA')), 'Presupuesto 2026', 'lima', '📆'),
         kpi('Zonas', Object.keys(BANCA_ZONAS).length.toString(), 'Redes y centros', 'lima', '📍'),
       ].join('');
 
@@ -3183,7 +3292,7 @@
         const v = String(r[c.k] || '—');
         if (c.t === 'ger') return `<td><span class="gb ${r[c.k] === 'CIRION' ? 'c' : r[c.k] === 'LIBERTY' ? 'l' : 'b'}">${v}</span></td>`;
         if (c.t === 'status') return `<td><span class="sp ${spClass(v)}">${v}</span></td>`;
-        if (c.t === 'cur') return `<td style="font-family:'DM Mono',monospace;font-size:10.5px">${parseFloat(r[c.k] || 0).toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>`;
+        if (c.t === 'cur') return `<td style="font-family:'DM Mono',monospace;font-size:10.5px">${fmtCOP(r[c.k] || 0)}</td>`;
         return `<td title="${v}">${v}</td>`;
       }).join('')}
     </tr>`).join('')}
@@ -3219,20 +3328,37 @@
     // EXPORT
     // ══════════════════════════════════════════════
     function exportTab(tab) {
-      let data;
-      if (tab === 'detalle' || tab === 'resumen') data = RAW;
-      else if (tab === 'cirion') data = RAW.filter(r => r.GERENCIA === 'CIRION');
-      else if (tab === 'liberty') data = RAW.filter(r => r.GERENCIA === 'LIBERTY');
-      else if (tab === 'banca') data = RAW.filter(r => r.GERENCIA === 'BANCA');
-      else if (tab === 'proyeccion') {
-        data = [];
+      let data = [];
+      if (tab === 'detalle') {
+        const srch = (document.getElementById('det-srch')?.value || '').toLowerCase();
+        const est = document.getElementById('det-est')?.value || '';
+        const d1 = document.getElementById('det-d1')?.value || '';
+        const d2 = document.getElementById('det-d2')?.value || '';
+        const ger = _dGer;
+        data = _dGer === 'todos' ? RAW : RAW.filter(r => r.GERENCIA === _dGer);
+        if (srch) data = data.filter(r => DCOLS.some(c => String(r[c.k] || '').toLowerCase().includes(srch)));
+        if (est) data = data.filter(r => r.ESTADO_ACTIVIDAD === est);
+        if (d1) data = data.filter(r => (r.FECHA_FINALIZACION || '') >= d1);
+        if (d2) data = data.filter(r => (r.FECHA_FINALIZACION || '') <= d2);
+      } else if (tab === 'resumen') {
+        const range = getRange('res-d1', 'res-d2');
+        data = RAW.filter(r => range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+      } else if (tab === 'cirion') {
+        const range = getRange('cir-d1', 'cir-d2');
+        data = RAW.filter(r => r.GERENCIA === 'CIRION' && range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+      } else if (tab === 'liberty') {
+        const range = getRange('lib-d1', 'lib-d2');
+        data = RAW.filter(r => r.GERENCIA === 'LIBERTY' && range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+      } else if (tab === 'banca') {
+        const range = getRange('ban-d1', 'ban-d2');
+        data = RAW.filter(r => r.GERENCIA === 'BANCA' && range.includes((r.FECHA_FINALIZACION || '').slice(0, 7)));
+      } else if (tab === 'proyeccion') {
         MONTHS_ISO.forEach((m, i) => {
           GERS.forEach(g => {
             data.push({ 'Mes': MONTHS_LBL[i] + ' 2026', 'Proyecto': g, 'Meta Mensual': metaMes(g, m), 'Producción Real': prodReal(g, m), '%Cump': pct(prodReal(g, m), metaMes(g, m)), 'Variación': prodReal(g, m) - metaMes(g, m), 'Meta Acum YTD': metaAcumYTD(g, m), 'Prod Acum YTD': prodAcumYTD(g, m), '%Cump Acum': pct(prodAcumYTD(g, m), metaAcumYTD(g, m)) });
           });
         });
       }
-      else data = RAW;
       if (!data || !data.length) { alert('Sin datos.'); return; }
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(data);
