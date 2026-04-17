@@ -3074,7 +3074,7 @@
           <div class="estado-metric"><span class="estado-metric-val">${rangeLbl}</span><span class="estado-metric-lbl">Periodo</span></div>
           <div class="estado-metric"><span class="estado-metric-val">${fmtCOP(prodTot)}</span><span class="estado-metric-lbl">Producción</span></div>
           <div class="estado-metric"><span class="estado-metric-val">${fmtCOP(metaTot)}</span><span class="estado-metric-lbl">Meta Periodo</span></div>
-          <div class="estado-metric"><span class="estado-metric-val" style="color:${cump>=95?'#4ade80':cump>=75?'#fbbf24':'#f87171'}">${cump}%</span><span class="estado-metric-lbl">%CUMP PERIODO</span></div>
+          <div class="estado-metric"><span class="estado-metric-val" style="color:${cump>=95?'#4ade80':cump>=75?'#fbbf24':'#f87171'}">${cump}%</span><span class="estado-metric-lbl">%Cump Periodo</span></div>
           <div class="estado-metric"><span class="estado-metric-val" style="color:${cumpAcumTotal>=95?'#4ade80':cumpAcumTotal>=75?'#fbbf24':'#f87171'}">${cumpAcumTotal}%</span><span class="estado-metric-lbl">%Cump Año</span></div>
           <div class="estado-metric highlight"><span class="estado-metric-val">${fmtCOP(metaAnualTotal)}</span><span class="estado-metric-lbl">Meta Anual 2026</span></div>`;
       }
@@ -3088,15 +3088,43 @@
 
       const tendColor = _trendGer === 'TODOS' ? 'rgba(0,29,98,.82)' : GC[_trendGer] + 'cc';
 
+      function fmtCOPShort(v) {
+        if (!v) return '$0';
+        if (Math.abs(v) >= 1e9) return '$' + (v / 1e9).toFixed(1).replace('.', ',') + 'B';
+        if (Math.abs(v) >= 1e6) return '$' + (v / 1e6).toFixed(1).replace('.', ',') + 'M';
+        if (Math.abs(v) >= 1e3) return '$' + Math.round(v / 1e3) + 'K';
+        return '$' + v;
+      }
       mkC('ch-res-tend', 'bar', {
         labels: MONTHS_LBL,
         datasets: [
-          { label: 'Producción Real', data: prodM, backgroundColor: tendColor, borderRadius: 4, order: 1 },
-          { label: 'Meta Proyectada', data: metaM, type: 'line', borderColor: '#C5D336', backgroundColor: 'rgba(197,211,54,.08)', borderWidth: 3, fill: true, tension: .4, pointRadius: 4, order: 0 }
+          {
+            label: 'Producción Real', data: prodM, backgroundColor: tendColor, borderRadius: 4, order: 1,
+            datalabels: {
+              display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+              anchor: 'end', align: 'end', offset: 2,
+              color: tendColor,
+              font: { family: "'DM Mono', monospace", weight: 'bold', size: 10 },
+              formatter: v => fmtCOPShort(v)
+            }
+          },
+          {
+            label: 'Meta Proyectada', data: metaM, type: 'line', borderColor: '#C5D336',
+            backgroundColor: 'rgba(197,211,54,.08)', borderWidth: 3, fill: true, tension: .4, pointRadius: 4, order: 0,
+            datalabels: { display: false }
+          }
         ]
       }, {
-        plugins: { ...CT.plugins, tooltip: { ...CT.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } } },
-        scales: { y: { ticks: { color: '#5c6b8a', callback: v => fmtCOP(v) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { ticks: { color: '#5c6b8a' }, grid: { display: false } } }
+        plugins: {
+          ...CT.plugins,
+          tooltip: { ...CT.plugins.tooltip, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtCOP(ctx.raw)}` } },
+          datalabels: {}
+        },
+        layout: { padding: { top: 22 } },
+        scales: {
+          y: { ticks: { color: '#5c6b8a', callback: v => fmtCOPShort(v) }, grid: { color: 'rgba(0,0,0,.04)' } },
+          x: { ticks: { color: '#5c6b8a' }, grid: { display: false } }
+        }
       });
 
       const donaProd = GERS.map(g => prodReal(g, range));
